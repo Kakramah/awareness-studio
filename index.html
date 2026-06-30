@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استوديو التوعية — هوية سوريا الجديدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
+<style>
+  :root{
+    --green:#13433E;--pine:#0E342F;--gold:#B8924F;--goldSoft:#C9A86A;
+    --cream:#F3EEE4;--creamDeep:#EBE3D4;--sage:#9FB4A4;--danger:#A33028;
+    --ink:#1C1C1A;--line:rgba(19,67,62,.14);--line2:rgba(19,67,62,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{height:100%}
+  body{font-family:'Tajawal',sans-serif;background:var(--creamDeep);color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+  .display{font-family:'Cairo',sans-serif}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  .ti{font-size:18px;line-height:1}
+
+  .app{height:100vh;display:flex;flex-direction:column}
+
+  /* ===== topbar ===== */
+  .topbar{flex:0 0 auto;height:56px;background:linear-gradient(180deg,#174e48,var(--pine));display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:var(--cream);z-index:5}
+  .tb-left{display:flex;align-items:center;gap:10px}
+  .tb-emblem{width:30px;height:30px;display:flex;align-items:center;justify-content:center}
+  .tb-emblem img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+  .tb-title{font-family:'Cairo';font-weight:900;font-size:16px}
+  .tb-title small{font-family:'El Messiri';font-weight:500;font-size:11px;color:var(--sage);margin-right:6px}
+  .tb-right{display:flex;align-items:center;gap:8px}
+  .tb-btn{display:inline-flex;align-items:center;gap:6px;color:var(--cream);background:rgba(255,255,255,.08);border-radius:9px;padding:8px 11px;font-family:'Cairo';font-weight:700;font-size:12.5px;transition:all .15s}
+  .tb-btn:hover{background:rgba(255,255,255,.16)}
+  .tb-btn[disabled]{opacity:.4;cursor:not-allowed}
+  .tb-btn.icon{padding:8px 9px}
+  .tb-btn.gold{background:var(--gold);color:#3a2e16}.tb-btn.gold:hover{background:var(--goldSoft)}
+  .tb-btn.line{background:transparent;border:1px solid rgba(243,238,228,.3)}
+  .tb-fmt{display:inline-flex;align-items:center;gap:6px;color:var(--sage);font-size:12px;background:rgba(0,0,0,.18);border-radius:9px;padding:7px 10px}
+
+  /* ===== workspace ===== */
+  .workspace{flex:1;display:grid;grid-template-columns:66px 1fr 332px;min-height:0}
+
+  /* sidebar */
+  .sidebar{background:var(--green);display:flex;flex-direction:column;align-items:stretch;padding:10px 8px;gap:4px;overflow-y:auto}
+  .nav{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--sage);border-radius:11px;padding:9px 2px;font-size:9.5px;font-family:'Cairo';font-weight:700;transition:all .15s}
+  .nav:hover{background:rgba(255,255,255,.08);color:var(--cream)}
+  .nav.active{background:var(--gold);color:#3a2e16}
+  .nav .ti{font-size:19px}
+  .nav-sp{flex:1}
+
+  /* stage */
+  .stage{background:repeating-linear-gradient(45deg,#e7e0d2,#e7e0d2 12px,#e9e3d6 12px,#e9e3d6 24px);overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;position:relative}
+  .stage-cap{position:absolute;top:12px;right:16px;font-size:11.5px;color:#7c756a;display:flex;align-items:center;gap:6px}
+  #stageWrap{display:flex;align-items:center;justify-content:center}
+  .studio-canvas{max-height:calc(100vh - 56px - 44px - 44px);max-width:100%;width:auto;height:auto;border-radius:10px;box-shadow:0 24px 60px -28px rgba(0,0,0,.6);display:block}
+  .stage-empty{width:300px;height:375px;border:1px dashed var(--line2);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#9a9384;font-size:13px;background:rgba(255,255,255,.4)}
+  .stage-empty .ti{font-size:34px;opacity:.5}
+  .zoombar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:11.5px;color:#6a756f}
+  .zoombar button{color:#6a756f;display:flex}
+
+  /* props */
+  .props{background:#fff;border-right:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column}
+  .props-head{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;gap:9px;z-index:2}
+  .props-head .ti{font-size:18px;color:var(--gold)}
+  .props-head h2{font-family:'Cairo';font-weight:900;font-size:15px;color:var(--green)}
+  .props-head p{font-size:11px;color:#8a948e;font-weight:400}
+  .props-body{padding:14px 16px 28px}
+  .field{margin-bottom:15px}
+  .field>label{display:flex;align-items:center;gap:6px;font-family:'Cairo';font-weight:700;font-size:12px;color:var(--green);margin-bottom:7px}
+  .field .sub{font-weight:400;color:#9aa49d;font-size:10.5px}
+  input[type=text],select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-family:'Tajawal';font-size:14px;background:var(--cream);color:var(--ink);transition:border-color .18s}
+  input[type=text]:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  textarea{resize:vertical;min-height:54px;line-height:1.5}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{padding:7px 11px;border:1.5px solid var(--line);border-radius:999px;background:#fff;font-size:12px;font-family:'Tajawal';color:#43504c;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+  .chip:hover{border-color:var(--goldSoft);transform:translateY(-1px)}
+  .chip.active{background:var(--green);border-color:var(--green);color:var(--cream)}
+  .btn{width:100%;padding:12px;border-radius:10px;font-family:'Cairo';font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+  .btn:hover{filter:brightness(1.04);transform:translateY(-1px)}
+  .btn.primary{background:var(--gold);color:#3a2e16}
+  .btn.green{background:var(--green);color:var(--cream)}
+  .btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--green)}
+  .btn.sm{padding:9px;font-size:12.5px}
+  .row{display:flex;gap:8px}
+  .row>*{flex:1}
+
+  .gentext{margin-top:6px}
+  .ginput{margin-bottom:9px}
+  .ginput label{display:block;font-size:10.5px;color:#9aa49d;font-family:'Cairo';font-weight:700;margin-bottom:3px}
+  .ginput .v{font-size:13.5px;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:8px 10px;line-height:1.5}
+  .ginput .v.head{font-family:'Cairo';font-weight:900;color:var(--green)}
+
+  details.prompt{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  details.prompt summary{cursor:pointer;list-style:none;padding:10px 12px;font-family:'Cairo';font-weight:700;font-size:12px;color:var(--green);background:var(--cream);display:flex;align-items:center;gap:6px}
+  details.prompt summary::-webkit-details-marker{display:none}
+  .prompt-box{background:var(--pine);color:#cfe0d8;padding:12px;direction:ltr;text-align:left;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.65;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto}
+
+  .up-btn{width:100%;padding:14px;border:1.5px dashed var(--goldSoft);border-radius:11px;background:var(--cream);color:var(--green);font-family:'Cairo';font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:7px}
+  .up-btn:hover{background:#fff;border-color:var(--gold)}
+  .up-info{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+  .up-info[hidden]{display:none}
+  .up-info #upName{color:var(--green);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+  .up-info button{color:var(--danger);font-family:'Cairo';font-weight:700;font-size:11.5px;flex:0 0 auto}
+  .dz-over{outline:2px solid var(--gold);outline-offset:3px;border-radius:13px}
+  label.check{display:flex;align-items:center;gap:9px;cursor:pointer;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Tajawal';font-weight:500;font-size:13px;color:var(--green)}
+  label.check input{width:17px;height:17px;accent-color:var(--green)}
+  .hintbox{font-size:11.5px;color:#8a948e;line-height:1.6;background:var(--cream);border:1px dashed var(--line);border-radius:10px;padding:11px 12px}
+  input[type=range]{-webkit-appearance:none;appearance:none;height:4px;background:var(--line2);border-radius:3px;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #fff}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #fff}
+  .plist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .pitem{display:flex;align-items:center;gap:6px;background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:12.5px}
+  .pitem .pn{flex:1;color:var(--green);font-weight:500;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pitem button{color:#8a948e;flex:0 0 auto}.pitem button.del:hover{color:var(--danger)}
+
+  /* filmstrip */
+  .filmstrip{flex:0 0 auto;height:62px;background:var(--cream);border-top:1px solid var(--line);display:flex;align-items:center;gap:9px;padding:0 14px;overflow-x:auto}
+  .fs-label{font-family:'Cairo';font-weight:700;font-size:11.5px;color:var(--green);display:flex;align-items:center;gap:5px;white-space:nowrap}
+  .fs-thumb{height:42px;width:34px;border-radius:5px;flex:0 0 auto;cursor:pointer;border:1.5px solid transparent;object-fit:cover;background:var(--green)}
+  .fs-thumb.active{border-color:var(--gold)}
+  .fs-add{height:42px;width:34px;border-radius:5px;flex:0 0 auto;border:1.5px dashed var(--line2);display:flex;align-items:center;justify-content:center;color:#9aa49d}
+  .fs-add:hover{border-color:var(--gold);color:var(--gold)}
+  .fs-sp{margin-right:auto}
+
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:var(--cream);padding:11px 22px;border-radius:999px;font-family:'Cairo';font-weight:700;font-size:13px;opacity:0;transition:all .25s;z-index:50;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:900px){
+    body{overflow:auto}.app{height:auto;min-height:100vh}
+    .workspace{grid-template-columns:1fr;min-height:0}
+    .sidebar{flex-direction:row;overflow-x:auto}.nav{flex:0 0 auto;min-width:62px}
+    .props{border-right:none;border-top:1px solid var(--line)}
+    .studio-canvas{max-height:70vh}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-emblem"><img id="tbEagle" alt="العقاب"></div>
+      <div class="tb-title display">استوديو التوعية<small>سوريا الجديدة</small></div>
+    </div>
+    <div class="tb-right">
+      <span class="tb-fmt"><i class="ti ti-crop-portrait"></i> <span id="fmtLabel">منشور · 1080×1350</span></span>
+      <button class="tb-btn icon line" id="undoBtn" disabled aria-label="تراجع"><i class="ti ti-arrow-back-up"></i></button>
+      <button class="tb-btn icon line" id="redoBtn" disabled aria-label="إعادة"><i class="ti ti-arrow-forward-up"></i></button>
+      <button class="tb-btn icon line" id="paletteToggle" aria-label="تبديل الباليتة"><i class="ti ti-contrast"></i></button>
+      <button class="tb-btn gold" id="exportTop"><i class="ti ti-download"></i> تصدير</button>
+      <button class="tb-btn line" id="publishTop"><i class="ti ti-rocket"></i> نشر</button>
+    </div>
+  </div>
+
+  <!-- ===== WORKSPACE ===== -->
+  <div class="workspace">
+    <!-- sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <button class="nav" data-sec="content"><i class="ti ti-text-size"></i>محتوى</button>
+      <button class="nav" data-sec="brand"><i class="ti ti-palette"></i>هوية</button>
+      <button class="nav" data-sec="image"><i class="ti ti-photo"></i>صورة</button>
+      <button class="nav" data-sec="layout"><i class="ti ti-layout-distribute-horizontal"></i>تخطيط</button>
+      <button class="nav" data-sec="series"><i class="ti ti-stack-2"></i>سلسلة</button>
+      <button class="nav" data-sec="export"><i class="ti ti-file-export"></i>تصدير</button>
+      <div class="nav-sp"></div>
+    </nav>
+
+    <!-- stage -->
+    <div class="stage">
+      <div class="stage-cap"><i class="ti ti-eye"></i> معاينة حيّة = التصدير</div>
+      <div id="stageWrap">
+        <div class="stage-empty"><i class="ti ti-photo-plus"></i><span>اختر موضوعاً واضغط «ولّد المحتوى»</span></div>
+      </div>
+      <div class="zoombar" id="zoombar" hidden><button aria-label="تصغير"><i class="ti ti-zoom-out"></i></button><span>ملائم</span><button aria-label="تكبير"><i class="ti ti-zoom-in"></i></button></div>
+    </div>
+
+    <!-- props -->
+    <aside class="props">
+      <div class="props-head"><i class="ti" id="secIcon"></i><div><h2 id="secTitle"></h2><p id="secDesc"></p></div></div>
+      <div class="props-body" id="props"></div>
+    </aside>
+  </div>
+
+  <!-- ===== FILMSTRIP ===== -->
+  <div class="filmstrip" id="filmstrip">
+    <span class="fs-label"><i class="ti ti-stack-2"></i> السلسلة</span>
+    <div id="fsThumbs" style="display:flex;gap:9px;align-items:center"></div>
+    <button class="fs-add" id="fsAdd" aria-label="أضف البوستر الحالي للسلسلة"><i class="ti ti-plus"></i></button>
+    <span class="fs-sp"></span>
+    <button class="tb-btn" style="background:var(--green);color:var(--cream)" id="fsExportAll" hidden><i class="ti ti-package"></i> تصدير السلسلة</button>
+  </div>
+</div>
+
+<input type="file" id="imgInput" accept="image/*" hidden>
+<div class="toast" id="toast">تم</div>
+
+<script src="assets/eagle-data.js"></script>
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const EAGLE=window.EAGLE_DATA;
+$('#tbEagle').src=EAGLE;
+
+const SECTIONS={
+  content:{icon:'ti-text-size',title:'المحتوى',desc:'الموضوع والنصوص والنبرة'},
+  brand:{icon:'ti-palette',title:'الهوية',desc:'الجهة والألوان والعلامة'},
+  image:{icon:'ti-photo',title:'الصورة',desc:'رفع ودمج صورة البوستر'},
+  layout:{icon:'ti-layout-distribute-horizontal',title:'التخطيط',desc:'موضع العنوان والمحاذاة'},
+  series:{icon:'ti-stack-2',title:'السلسلة',desc:'إدارة بوسترات الحملة'},
+  export:{icon:'ti-file-export',title:'التصدير',desc:'تنزيل ونسخ ونشر'}
+};
+
+let state={
+  section:'content', topicQuery:'', topicId:null, tone:'warn', seed:0, last:null,
+  entIdx:0, palette:'dark', imgData:null, imgLum:null, imgName:'', mode:'full',
+  titlePos:'top', titleOffset:0, campTag:'', watermark:false, wmText:'هذا الإعلان غير حكومي',
+  over:{}, img:{zoom:1,ox:0,oy:0,bright:1,contrast:1,duotone:false,grain:false,vignette:false},
+  series:[], format:'post', promptMode:'plate'
+};
+const FMT={post:{w:1080,h:1350,label:'منشور · 1080×1350'},story:{w:1080,h:1920,label:'ستوري · 1080×1920'},square:{w:1080,h:1080,label:'مربّع · 1080×1080'}};
+function curD(){if(!state.last)return null;const o=state.over;return Object.assign({},state.last,{
+  head:o.head!=null?o.head:state.last.head, sub:o.sub!=null?o.sub:state.last.sub,
+  slogan:o.slogan!=null?o.slogan:state.last.slogan, tag:o.tag!=null?o.tag:state.last.tag });}
+
+/* ============ ENGINE (generation + canvas render) ============ */
+const pick=(arr,seed)=>arr[(seed%arr.length+arr.length)%arr.length];
+function matchTopic(v){if(!v)return null;const low=v.toLowerCase();return AW_TOPICS.find(t=>t.label===v||t.kw.some(k=>low.includes(k)));}
+function normTag(s){s=String(s||'').trim();if(!s)return '';if(s[0]!=='#')s='#'+s;return s.replace(/\s+/g,'_');}
+
+function generate(reshuffle){
+  const raw=(state.topicQuery||'').trim();
+  if(!raw && !state.topicId){toast('اكتب موضوعاً أولاً');return;}
+  if(reshuffle) state.seed++; else state.seed=0;
+  const s=state.seed, ent=AW_ENTITIES[state.entIdx], tone=state.tone;
+  let head,sub,slogan,tag,concept,topicLabel;
+  const t=state.topicId?AW_TOPICS.find(x=>x.id===state.topicId):matchTopic(raw);
+  if(t){topicLabel=t.label;head=pick(t.heads,s);sub=pick(t.subs,s);slogan=pick(t.slogans,s);tag=pick(t.tags,s);concept=pick(t.concepts,s);}
+  else{topicLabel=raw;head=pick(AW_GENERIC.heads(raw),s);sub=pick(AW_GENERIC.subs(raw),s);slogan=pick(AW_GENERIC.slogans,s);tag=pick(AW_GENERIC.tags(raw),s);concept=pick(AW_GENERIC.concepts(raw),s);}
+  if(state.campTag&&state.campTag.trim()) tag=normTag(state.campTag);
+  state.last={head,sub,slogan,tag,concept,ent,tone,topicLabel};
+  state.over={};
+  if(state.section==='content') renderProps();
+  update();
+}
+
+function fmtAR(){return state.format==='story'?'9:16  (1080x1920)':state.format==='square'?'1:1  (1080x1080)':'4:5  (1080x1350)';}
+function toneLight(d){return d.tone==='warn'?'clean studio key + one meaningful cast shadow, slightly dramatic':d.tone==='honor'?'soft respectful warm key light':'hopeful golden-hour, gentle green duotone';}
+function buildPrompt(d){ return state.promptMode==='full'?buildFullPrompt(d):buildPlatePrompt(d); }
+
+function buildFullPrompt(d){
+  const ar=fmtAR(),dark=state.palette==='dark';
+  return `{
+  "render": "COMPLETE poster with text baked in (New Syria public-awareness identity)",
+  "aspect_ratio": "${ar}",
+  "emblem": "Syrian eagle (العقاب) + three stars, top-center, ${dark?'white':'gold'} — new-Syria mark, NOT old-regime symbols",
+  "entity_lockup": "${d.ent.ar}  /  ${d.ent.en}  (Arabic bold large + small English caps, under the emblem)",
+  "scene": "${d.concept.en}",
+  "headline_ar": "${d.head}",
+  "subline_ar": "${d.sub}",
+  "slogan_ar": "${d.slogan}",
+  "headline_position": "${state.titlePos}",
+  "footer": "${d.tag}   ${d.ent.handle}  (bottom-center)",${state.watermark?`
+  "disclaimer_badge": "${state.wmText}  (small rounded pill, top-left)",`:''}
+  "color_palette": ["#13433E","#B8924F","#F3EEE4","#9FB4A4","#A33028 danger-only"],
+  "background": "${dark?'deep pine-green gradient (#13433E→#0E342F) with faint Islamic star watermark':'ivory cream (#F3EEE4) with faint Islamic star watermark'}${state.imgData?', OR composited over the supplied photograph':''}",
+  "typography": "bold geometric Arabic display (Cairo-like) with kashida; render the Arabic EXACTLY as written, crisp and correctly connected; Arabic-first then small English caps",
+  "lighting": "${toneLight(d)}",
+  "negative_prompt": "no clutter, no multiple subjects, no plastic 3D, no old-regime flag/eagle, max 3 text levels, no misspelled or broken Arabic letters",
+  "note": "Use an image model with strong Arabic text rendering. If letters break, switch to the clean-background prompt and let the studio overlay the text."
+}`;
+}
+
+function buildPlatePrompt(d){
+  const ar=fmtAR();
+  const light=toneLight(d);
+  const zone=state.titlePos==='center'?'middle band':state.titlePos==='bottom'?'lower third':'upper third';
+  return `{
+  "task": "Generate ONLY the background photograph / scene. Do NOT draw any text, letters, logo, emblem, eagle, flag, or watermark — the studio composites all of those as a clean overlay afterwards.",
+  "aspect_ratio": "${ar}",
+  "scene": "${d.concept.en}",
+  "composition": "single cinematic metaphor, one subject, generous empty negative space. Keep the TOP-CENTER area clear (emblem placed later), and keep the ${zone} clean and slightly darker so the overlaid Arabic headline stays legible.",
+  "color_grade": "deep pine-green (#13433E), bronze-gold accents (#B8924F), ivory cream (#F3EEE4) — New-Syria identity mood",
+  "lighting": "${light}",
+  "realism": "photographic, natural texture, no plastic 3D, no busy clutter, no multiple subjects",
+  "negative_prompt": "no text, no Arabic or Latin letters, no captions, no typography, no logo, no eagle, no flag, no watermark, no badges, no UI frames or borders, no old-regime symbols"
+}`;
+}
+
+const PC={green:'#13433E',pine:'#0E342F',gold:'#B8924F',goldSoft:'#C9A86A',cream:'#F3EEE4',sage:'#9FB4A4',ink:'#1C1C1A'};
+function loadImage(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+function drawCover(ctx,img,x,y,w,h){const ir=img.width/img.height,r=w/h;let sw,sh,sx,sy;if(ir>r){sh=img.height;sw=sh*r;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/r;sx=0;sy=(img.height-sh)/2;}
+  const z=state.img.zoom||1; if(z!==1||state.img.ox||state.img.oy){const nw=sw/z,nh=sh/z;sx+=(sw-nw)*(0.5+ (state.img.ox||0));sy+=(sh-nh)*(0.5+(state.img.oy||0));sx=Math.max(0,Math.min(img.width-nw,sx));sy=Math.max(0,Math.min(img.height-nh,sy));sw=nw;sh=nh;}
+  ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);}
+function drawPhotoFX(ctx,x,y,w,h){
+  const f=state.img;
+  if(f.duotone){ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.globalCompositeOperation='color';ctx.fillStyle='#1d5650';ctx.globalAlpha=.72;ctx.fillRect(x,y,w,h);ctx.globalCompositeOperation='multiply';ctx.globalAlpha=.25;ctx.fillStyle='#0E342F';ctx.fillRect(x,y,w,h);ctx.restore();}
+  if(f.vignette){const g=ctx.createRadialGradient(x+w/2,y+h/2,Math.min(w,h)*0.35,x+w/2,y+h/2,Math.max(w,h)*0.72);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.fillStyle=g;ctx.fillRect(x,y,w,h);ctx.restore();}
+  if(f.grain){ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.globalAlpha=.06;ctx.globalCompositeOperation='overlay';ctx.drawImage(grainTile(),x,y,w,h);ctx.restore();}
+}
+let _grain;
+function grainTile(){if(_grain)return _grain;const n=160,c=document.createElement('canvas');c.width=n;c.height=n;const x=c.getContext('2d');const id=x.createImageData(n,n);for(let i=0;i<id.data.length;i+=4){const v=Math.random()*255;id.data[i]=id.data[i+1]=id.data[i+2]=v;id.data[i+3]=255;}x.putImageData(id,0,0);_grain=c;return c;}
+function tintCanvas(img,color,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);x.globalCompositeOperation='source-in';x.fillStyle=color;x.fillRect(0,0,w,h);return c;}
+function wrapLines(ctx,text,maxW){const words=String(text).split(' ');const lines=[];let cur='';for(const w of words){const t=cur?cur+' '+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w;}else cur=t;}if(cur)lines.push(cur);return lines;}
+function drawSpaced(ctx,text,cx,y,ls){let tot=0;for(const ch of text)tot+=ctx.measureText(ch).width+ls;tot-=ls;const old=ctx.textAlign;ctx.textAlign='left';let x=cx-tot/2;for(const ch of text){ctx.fillText(ch,x,y);x+=ctx.measureText(ch).width+ls;}ctx.textAlign=old;}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function bandLum(img){const w=120,h=150,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');const ir=img.width/img.height,r=w/h;let sw,sh,sx,sy;if(ir>r){sh=img.height;sw=sh*r;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/r;sx=0;sy=(img.height-sh)/2;}x.drawImage(img,sx,sy,sw,sh,0,0,w,h);const y0=Math.floor(h*0.26),y1=Math.floor(h*0.48);let sum=0,n=0;try{const dt=x.getImageData(0,y0,w,y1-y0).data;for(let i=0;i<dt.length;i+=4){sum+=0.2126*dt[i]+0.7152*dt[i+1]+0.0722*dt[i+2];n++;}}catch(e){return null;}return n?sum/n:null;}
+function scrimBoost(){return state.imgLum!=null?Math.max(0,Math.min(.5,(state.imgLum-110)/170)):0;}
+function fullStops(dark,b,c){c=(c==null?0.36:c);const baseCol=dark?'11,42,38':'20,40,36';const topCol=dark?'rgba(11,42,38,.93)':'rgba(243,238,228,.96)';const botCol=dark?'rgba(11,42,38,.95)':'rgba(14,52,47,.93)';const base=dark?0.40:0.14;const lo=Math.max(.14,c-.13),hi=Math.min(.92,c+.14);const pts=[[0,topCol],[Math.max(.10,lo-.05),'rgba('+baseCol+','+base.toFixed(2)+')'],[lo,'rgba('+baseCol+','+(base+b).toFixed(2)+')'],[hi,'rgba('+baseCol+','+(base+b).toFixed(2)+')'],[Math.min(.93,hi+.06),'rgba('+baseCol+','+base.toFixed(2)+')'],[1,botCol]];for(let i=1;i<pts.length;i++)if(pts[i][0]<=pts[i-1][0])pts[i][0]=pts[i-1][0]+0.001;return pts;}
+
+async function drawPoster(d){
+  const F=FMT[state.format]||FMT.post, W=F.w, H=F.h, cx=W/2, dark=state.palette==='dark', hasImg=!!state.imgData;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');
+  try{await Promise.all([document.fonts.load('900 64px "Cairo"'),document.fonts.load('700 36px "Cairo"'),document.fonts.load('600 38px "Cairo"'),document.fonts.load('500 26px "Tajawal"')]);}catch(e){}
+  ctx.textAlign='center';
+  let hs=66;ctx.font='900 '+hs+'px "Cairo",sans-serif';
+  let hLines=wrapLines(ctx,d.head,W-200);
+  while(hLines.length>3&&hs>42){hs-=4;ctx.font='900 '+hs+'px "Cairo",sans-serif';hLines=wrapLines(ctx,d.head,W-200);}
+  ctx.font='600 38px "Cairo",sans-serif';
+  const sLines=wrapLines(ctx,d.sub,W-220);
+  const headH=hLines.length*hs*1.34, subH=sLines.length*52, titleH=headH+10+subH;
+  const lockBottom=398;
+  let titleTop;
+  if(state.titlePos==='center') titleTop=Math.min(Math.max((H-titleH)/2,lockBottom+24),H-200-titleH);
+  else if(state.titlePos==='bottom') titleTop=Math.max(H-200-titleH,lockBottom+24);
+  else titleTop=lockBottom+8;
+  titleTop=Math.max(lockBottom+12,Math.min(H-150-titleH,titleTop+(state.titleOffset||0)));
+  const titleCenter=(titleTop+titleH/2)/H;
+
+  ctx.fillStyle=dark?PC.pine:PC.cream;ctx.fillRect(0,0,W,H);
+  const eagle=await loadImage(EAGLE);
+  const photo=hasImg?await loadImage(state.imgData):null;
+  if(hasImg&&state.mode==='full'){
+    ctx.filter=`brightness(${state.img.bright}) contrast(${state.img.contrast})`;drawCover(ctx,photo,0,0,W,H);ctx.filter='none';
+    drawPhotoFX(ctx,0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,0,H);fullStops(dark,scrimBoost(),titleCenter).forEach(s=>g.addColorStop(s[0],s[1]));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  }else if(hasImg&&state.mode==='panel'){
+    const py=Math.round(H*0.42);
+    ctx.filter=`brightness(${state.img.bright}) contrast(${state.img.contrast})`;drawCover(ctx,photo,0,py,W,H-py);ctx.filter='none';
+    drawPhotoFX(ctx,0,py,W,H-py);
+    if(dark){const tg=ctx.createLinearGradient(0,0,0,py);tg.addColorStop(0,'#1d5650');tg.addColorStop(1,PC.pine);ctx.fillStyle=tg;}else ctx.fillStyle=PC.cream;
+    ctx.fillRect(0,0,W,py);
+    const g=ctx.createLinearGradient(0,py-2,0,H);
+    g.addColorStop(0,dark?'rgba(14,52,47,1)':'rgba(243,238,228,1)');g.addColorStop(.18,'rgba(0,0,0,0)');g.addColorStop(.72,'rgba(0,0,0,0)');g.addColorStop(1,dark?'rgba(11,42,38,.92)':'rgba(14,52,47,.9)');
+    ctx.fillStyle=g;ctx.fillRect(0,py-2,W,H-py+2);
+  }else if(dark){
+    const g=ctx.createLinearGradient(0,0,W*0.4,H);g.addColorStop(0,'#1d5650');g.addColorStop(1,PC.pine);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  }
+
+  ctx.textAlign='center';ctx.textBaseline='top';
+  let y=120;const ew=120,eh=120;
+  ctx.drawImage(dark?tintCanvas(eagle,PC.cream,ew,eh):eagle,cx-ew/2,y,ew,eh);y+=eh+12;
+  ctx.direction='ltr';ctx.fillStyle=dark?PC.goldSoft:PC.gold;ctx.font='24px "Cairo",sans-serif';drawSpaced(ctx,'★ ★ ★',cx,y,6);y+=42;
+  ctx.direction='rtl';ctx.fillStyle=dark?PC.cream:PC.green;ctx.font='700 36px "Cairo",sans-serif';ctx.fillText(d.ent.ar,cx,y);y+=48;
+  ctx.direction='ltr';ctx.fillStyle=dark?PC.sage:'#8a7544';ctx.font='600 19px "Tajawal",sans-serif';drawSpaced(ctx,d.ent.en,cx,y+4,4);
+
+  let ty=titleTop;ctx.direction='rtl';
+  if(hasImg){ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=20;ctx.shadowOffsetY=3;}
+  ctx.fillStyle=dark?PC.goldSoft:PC.gold;ctx.font='900 '+hs+'px "Cairo",sans-serif';
+  for(const ln of hLines){ctx.fillText(ln,cx,ty);ty+=hs*1.34;}
+  ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;ty+=10;
+  ctx.fillStyle=dark?PC.sage:PC.green;ctx.font='600 38px "Cairo",sans-serif';
+  for(const ln of sLines){ctx.fillText(ln,cx,ty);ty+=52;}
+  const titleBottom=ty;
+
+  if(!hasImg){
+    ctx.font='400 27px "Tajawal",sans-serif';
+    const bw=W-180,bx=(W-bw)/2;const cl=wrapLines(ctx,d.concept.ar,bw-60);
+    const bh=48+cl.length*38+18, avTop=titleBottom+24, avBot=H-175;
+    if(avBot-avTop>=bh){
+      const byy=avTop+Math.max(0,(avBot-avTop-bh)/2);
+      ctx.save();ctx.strokeStyle=dark?'rgba(201,168,106,.45)':'rgba(184,146,79,.55)';ctx.lineWidth=1.5;ctx.setLineDash([6,5]);roundRect(ctx,bx,byy,bw,bh,14);ctx.stroke();ctx.restore();
+      ctx.direction='rtl';ctx.textBaseline='top';ctx.fillStyle=dark?PC.goldSoft:PC.gold;ctx.font='700 19px "Cairo",sans-serif';ctx.fillText('الاستعارة البصرية',cx,byy+16);
+      ctx.fillStyle=dark?'rgba(243,238,228,.72)':'#6a756f';ctx.font='400 27px "Tajawal",sans-serif';let cty=byy+50;for(const ln of cl){ctx.fillText(ln,cx,cty);cty+=38;}
+    }
+  }
+
+  ctx.textBaseline='bottom';ctx.direction='rtl';
+  ctx.fillStyle=hasImg?'rgba(243,238,228,.85)':(dark?'rgba(159,180,164,.78)':'#8a948e');
+  ctx.font='500 26px "Tajawal",sans-serif';ctx.fillText(d.tag+'  ·  '+d.ent.handle,cx,H-74);
+  ctx.fillStyle=(dark||hasImg)?PC.goldSoft:PC.gold;ctx.font='700 35px "Cairo",sans-serif';ctx.fillText(d.slogan,cx,H-118);
+
+  if(state.watermark){
+    const txt=state.wmText||'هذا الإعلان غير حكومي';
+    ctx.direction='rtl';ctx.font='600 23px "Tajawal",sans-serif';
+    const tw=ctx.measureText(txt).width,padX=18,padY=12,m=30;
+    const bw=tw+padX*2,bh=23+padY*2,bx=m,by=m;
+    ctx.save();roundRect(ctx,bx,by,bw,bh,bh/2);ctx.fillStyle='rgba(28,28,26,.74)';ctx.fill();ctx.lineWidth=1.2;ctx.strokeStyle='rgba(201,168,106,.6)';ctx.stroke();
+    ctx.fillStyle=PC.cream;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,bx+bw/2,by+bh/2+1);ctx.restore();
+  }
+  return cv;
+}
+
+/* ============ PREVIEW + EXPORT ============ */
+let _rpToken=0;
+async function refreshPreview(){
+  if(!state.last)return;
+  const tok=++_rpToken;
+  try{
+    const cv=await drawPoster(curD());
+    if(tok!==_rpToken)return;
+    cv.className='studio-canvas';
+    $('#stageWrap').innerHTML='';$('#stageWrap').appendChild(cv);
+    $('#zoombar').hidden=false;
+  }catch(e){}
+}
+function update(){ if(state.last){ refreshPreview(); pushHist(); autosave(); const wb=$('#warnBox'); if(wb) wb.innerHTML=warnHTML(curD()); } }
+
+/* ===== history (undo/redo) ===== */
+const SNAP_KEYS=['topicQuery','topicId','tone','seed','last','over','entIdx','palette','imgData','imgLum','imgName','mode','titlePos','titleOffset','campTag','watermark','wmText','img','format','promptMode'];
+function snapshot(){const o={};SNAP_KEYS.forEach(k=>o[k]=state[k]);return JSON.stringify(o);}
+function restore(s){const o=JSON.parse(s);SNAP_KEYS.forEach(k=>{if(k in o)state[k]=o[k];});}
+let hist=[],hi=-1,histT;
+function pushHist(){clearTimeout(histT);histT=setTimeout(()=>{const s=snapshot();if(hist[hi]===s)return;hist=hist.slice(0,hi+1);hist.push(s);if(hist.length>60)hist.shift();hi=hist.length-1;updUndo();},260);}
+function updUndo(){$('#undoBtn').disabled=hi<=0;$('#redoBtn').disabled=hi>=hist.length-1;}
+function undo(){if(hi<=0)return;hi--;restore(hist[hi]);afterRestore();}
+function redo(){if(hi>=hist.length-1)return;hi++;restore(hist[hi]);afterRestore();}
+function afterRestore(){renderProps();if(state.last)refreshPreview();updUndo();autosave();}
+
+/* ===== projects (localStorage) ===== */
+const PKEY='aw_projects', AKEY='aw_autosave';
+function autosave(){try{localStorage.setItem(AKEY,snapshot());}catch(e){}}
+function getProjects(){try{return JSON.parse(localStorage.getItem(PKEY)||'{}');}catch(e){return {};}}
+function saveProject(name){if(!name)return;const p=getProjects();p[name]={data:snapshot(),at:Date.now()};localStorage.setItem(PKEY,JSON.stringify(p));toast('حُفظ المشروع ✓');if(state.section==='export')renderProps();}
+function loadProject(name){const p=getProjects();if(!p[name])return;restore(p[name].data);afterRestore();selectSection('content');toast('فُتح المشروع ✓');}
+function deleteProject(name){const p=getProjects();delete p[name];localStorage.setItem(PKEY,JSON.stringify(p));if(state.section==='export')renderProps();}
+function renderProjList(){const el=$('#projList');if(!el)return;const p=getProjects();const names=Object.keys(p).sort((a,b)=>p[b].at-p[a].at);
+  el.innerHTML=names.length?names.map(n=>`<div class="pitem"><span class="pn" data-load="${escAttr(n)}"><i class="ti ti-file"></i> ${esc(n)}</span><button class="del" data-del="${escAttr(n)}" aria-label="حذف"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:11.5px;color:#9aa49d;padding:4px 2px">لا مشاريع محفوظة بعد.</div>';
+  el.querySelectorAll('[data-load]').forEach(x=>x.onclick=()=>loadProject(x.dataset.load));
+  el.querySelectorAll('[data-del]').forEach(x=>x.onclick=()=>deleteProject(x.dataset.del));}
+
+/* ===== series (campaign) ===== */
+const SKEY='aw_series';
+function saveSeries(){try{localStorage.setItem(SKEY,JSON.stringify(state.series));}catch(e){}}
+async function addSlide(){
+  if(!state.last){toast('ولّد المحتوى أولاً');return;}
+  const cv=await drawPoster(curD());
+  const tc=document.createElement('canvas');tc.width=84;tc.height=Math.round(84*cv.height/cv.width);tc.getContext('2d').drawImage(cv,0,0,tc.width,tc.height);
+  state.series.push({snap:snapshot(),thumb:tc.toDataURL('image/png')});
+  renderFilmstrip();saveSeries();toast('أُضيف للسلسلة ('+state.series.length+') ✓');
+}
+function selectSlide(i){const s=state.series[i];if(!s)return;restore(s.snap);afterRestore();selectSection('content');}
+function deleteSlide(i){state.series.splice(i,1);renderFilmstrip();saveSeries();if(state.section==='series')renderProps();}
+function renderFilmstrip(){
+  const el=$('#fsThumbs');
+  el.innerHTML=state.series.map((s,i)=>`<span style="position:relative;display:inline-flex"><img class="fs-thumb" src="${s.thumb}" data-slide="${i}" title="شريحة ${i+1}"><button data-delslide="${i}" style="position:absolute;top:-6px;left:-6px;background:var(--danger);color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center" aria-label="حذف">×</button></span>`).join('');
+  el.querySelectorAll('[data-slide]').forEach(x=>x.onclick=()=>selectSlide(+x.dataset.slide));
+  el.querySelectorAll('[data-delslide]').forEach(x=>x.onclick=e=>{e.stopPropagation();deleteSlide(+x.dataset.delslide);});
+  $('#fsExportAll').hidden=state.series.length===0;
+}
+async function exportSeries(){
+  if(!state.series.length){toast('لا سلسلة بعد');return;}
+  const cur=snapshot();toast('جارٍ تصدير '+state.series.length+' بوستر…');
+  for(let i=0;i<state.series.length;i++){
+    restore(state.series[i].snap);
+    const cv=await drawPoster(curD());
+    const a=document.createElement('a');a.download='series-'+(i+1)+'.png';a.href=cv.toDataURL('image/png');a.click();
+    await new Promise(r=>setTimeout(r,500));
+  }
+  restore(cur);afterRestore();toast('تم تصدير السلسلة ✓');
+}
+
+/* ===== warnings (contrast + length) ===== */
+function warnings(d){
+  const w=[];
+  if(!d)return w;
+  if((d.head||'').length>34) w.push('العنوان طويل — اختصره لـ٢–٥ كلمات لأثرٍ أقوى.');
+  if(state.imgData&&state.mode==='full'&&state.imgLum!=null&&state.imgLum>185&&state.palette==='light')
+    w.push('الصورة فاتحة جداً خلف العنوان — جرّب الباليتة الداكنة أو موضعاً أغمق.');
+  if(state.imgData&&state.mode==='full'&&state.imgLum!=null&&state.imgLum>205&&state.palette==='dark')
+    w.push('منطقة العنوان شديدة السطوع — التعتيم مرفوع لأقصاه؛ فكّر بموضعٍ أغمق.');
+  return w;
+}
+
+async function exportPNG(){
+  if(!state.last){toast('ولّد المحتوى أولاً');return;}
+  toast('جارٍ التصدير…');
+  try{const cv=await drawPoster(curD());const a=document.createElement('a');a.download='awareness-'+(state.topicId||'poster')+'.png';a.href=cv.toDataURL('image/png');a.click();toast('تم التحميل ✓');}
+  catch(e){toast('تعذّر التصدير: '+e.message);}
+}
+
+/* ============ CLIPBOARD + TOAST ============ */
+function copy(t){navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✓')).catch(()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('تم النسخ ✓');});}
+let toT;function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(toT);toT=setTimeout(()=>el.classList.remove('show'),1600);}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const escAttr=s=>esc(s).replace(/'/g,'&#39;');
+
+/* ============ UI — SECTIONS ============ */
+function selectSection(sec){
+  state.section=sec;
+  $$('#sidebar .nav').forEach(n=>n.classList.toggle('active',n.dataset.sec===sec));
+  const m=SECTIONS[sec];$('#secIcon').className='ti '+m.icon;$('#secTitle').textContent=m.title;$('#secDesc').textContent=m.desc;
+  renderProps();
+}
+
+function chipRow(items,activeVal,attr){return items.map(it=>`<button class="chip${it.val===activeVal?' active':''}" data-${attr}="${it.val}">${it.emoji?`<span>${it.emoji}</span>`:''}${it.label}</button>`).join('');}
+function slider(label,key,min,max,step,val){return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><span style="font-size:11px;color:#6a756f;width:36px;flex:0 0 auto">${label}</span><input type="range" data-img="${key}" min="${min}" max="${max}" step="${step}" value="${val}" style="flex:1"><span class="sv" style="font-size:11px;color:#6a756f;width:30px;text-align:left;flex:0 0 auto">${(+val).toFixed(2)}</span></div>`;}
+
+function renderProps(){
+  const P=$('#props');const d=curD();
+  if(state.section==='content'){
+    P.innerHTML=`
+      <div class="field"><label><i class="ti ti-bulb"></i> موضوع التوعية</label>
+        <input type="text" id="topicInput" placeholder="مثال: السباحة في النهر… أو اكتب موضوعاً" value="${escAttr(state.topicQuery)}" autocomplete="off"></div>
+      <div class="field"><label>مواضيع جاهزة</label><div class="chips" id="topicChips">${AW_TOPICS.map(t=>`<button class="chip${state.topicId===t.id?' active':''}" data-id="${t.id}"><span>${t.emoji}</span>${t.label}</button>`).join('')}</div></div>
+      <div class="field"><label>النبرة</label><div class="chips" id="toneChips">${Object.entries(AW_TONES).map(([k,v])=>`<button class="chip${state.tone===k?' active':''}" data-tone="${k}" title="${v.note}">${v.label}</button>`).join('')}</div></div>
+      <div class="row" style="margin-bottom:14px"><button class="btn primary" id="genBtn"><i class="ti ti-sparkles"></i> ولّد المحتوى</button><button class="btn ghost" id="shuffleBtn" style="flex:0 0 46px"><i class="ti ti-refresh"></i></button></div>
+      <div id="warnBox">${d?warnHTML(d):''}</div>
+      <div id="genText">${d?genTextHTML(d):'<div class="hintbox">اكتب موضوعاً أو اختر من الجاهز، ثم اضغط «ولّد المحتوى». ستظهر النصوص هنا وتُرسم البطاقة فوراً.</div>'}</div>`;
+    $('#topicInput').addEventListener('input',e=>{state.topicQuery=e.target.value;const m=matchTopic(e.target.value.trim());state.topicId=m?m.id:null;$$('#topicChips .chip').forEach(c=>c.classList.toggle('active',m&&c.dataset.id===m.id));});
+    $('#topicInput').addEventListener('keydown',e=>{if(e.key==='Enter')generate(false);});
+    $$('#topicChips .chip').forEach(c=>c.onclick=()=>{state.topicId=c.dataset.id;state.topicQuery=AW_TOPICS.find(x=>x.id===c.dataset.id).label;$('#topicInput').value=state.topicQuery;$$('#topicChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.id===c.dataset.id));const tp=AW_TOPICS.find(x=>x.id===c.dataset.id);state.tone=tp.tone;state.palette=AW_TONES[tp.tone].dark?'dark':'light';$$('#toneChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.tone===state.tone));});
+    $$('#toneChips .chip').forEach(c=>c.onclick=()=>{state.tone=c.dataset.tone;state.palette=AW_TONES[state.tone].dark?'dark':'light';$$('#toneChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.tone===state.tone));update();});
+    $('#genBtn').onclick=()=>generate(false);
+    $('#shuffleBtn').onclick=()=>generate(true);
+    wireGenText();
+  }
+  else if(state.section==='brand'){
+    P.innerHTML=`
+      <div class="field"><label><i class="ti ti-building-bank"></i> الجهة (القفل تحت العقاب)</label>
+        <select id="entitySel">${AW_ENTITIES.map((e,i)=>`<option value="${i}"${i===state.entIdx?' selected':''}>${e.ar}</option>`).join('')}</select></div>
+      <div class="field"><label>الباليتة</label><div class="chips" id="palChips">
+        <button class="chip${state.palette==='dark'?' active':''}" data-pal="dark">أخضر داكن</button>
+        <button class="chip${state.palette==='light'?' active':''}" data-pal="light">كريمي فاتح</button></div></div>
+      <div class="field"><label>لوحة ألوان الهوية</label><div style="display:flex;gap:6px">
+        ${[['#13433E','أخضر'],['#B8924F','ذهبي'],['#F3EEE4','كريمي'],['#9FB4A4','مريمي'],['#A33028','أحمر']].map(c=>`<div title="${c[1]} ${c[0]}" style="flex:1;height:34px;border-radius:8px;background:${c[0]};border:1px solid var(--line)"></div>`).join('')}</div></div>
+      <div class="field"><label class="check"><input type="checkbox" id="wmChk"${state.watermark?' checked':''}> أضِف علامة «غير حكومي»</label></div>
+      <div class="field" id="wmTextField"${state.watermark?'':' hidden'}><label>نص العلامة</label><input type="text" id="wmText" value="${escAttr(state.wmText)}"></div>`;
+    $('#entitySel').onchange=e=>{state.entIdx=+e.target.value;if(state.last)state.last.ent=AW_ENTITIES[state.entIdx];update();};
+    $$('#palChips .chip').forEach(c=>c.onclick=()=>{state.palette=c.dataset.pal;$$('#palChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.pal===state.palette));update();});
+    $('#wmChk').onchange=e=>{state.watermark=e.target.checked;$('#wmTextField').hidden=!state.watermark;update();};
+    $('#wmText').oninput=e=>{state.wmText=e.target.value;update();};
+  }
+  else if(state.section==='image'){
+    P.innerHTML=`
+      <div class="field" id="dropZone"><label><i class="ti ti-photo-up"></i> صورة البوستر</label>
+        <button class="up-btn" id="upBtn"><i class="ti ti-upload"></i> ارفع صورةً أو أفلِتها هنا</button>
+        <div class="up-info" id="upInfo"${state.imgData?'':' hidden'}><span id="upName">${state.imgName||'صورة'}</span><button id="upRemove"><i class="ti ti-x"></i> إزالة</button></div></div>
+      <div class="field"><label>نمط الدمج</label><div class="chips" id="modeChips">
+        <button class="chip${state.mode==='full'?' active':''}" data-mode="full">غلاف كامل</button>
+        <button class="chip${state.mode==='panel'?' active':''}" data-mode="panel">لوحة علوية</button></div></div>
+      ${state.imgData?`
+      <div class="field"><label><i class="ti ti-adjustments"></i> ضبط الصورة</label>
+        ${slider('تكبير','zoom',1,2.4,0.02,state.img.zoom)}
+        ${slider('أفقي','ox',-0.4,0.4,0.02,state.img.ox)}
+        ${slider('رأسي','oy',-0.4,0.4,0.02,state.img.oy)}
+        ${slider('سطوع','bright',0.6,1.5,0.02,state.img.bright)}
+        ${slider('تباين','contrast',0.7,1.4,0.02,state.img.contrast)}
+      </div>
+      <div class="field"><label>فلاتر سينمائية</label><div class="chips" id="fxChips">
+        <button class="chip${state.img.duotone?' active':''}" data-fx="duotone">دوتون أخضر</button>
+        <button class="chip${state.img.grain?' active':''}" data-fx="grain">حبيبات</button>
+        <button class="chip${state.img.vignette?' active':''}" data-fx="vignette">تظليل الحواف</button></div></div>`:`
+      <div class="hintbox"><i class="ti ti-info-circle"></i> «غلاف كامل»: الصورة تملأ الإطار. «لوحة علوية»: نص فوق وصورة تحت. ارفع صورةً لتظهر أدوات الضبط والفلاتر، والتعتيم يتكيّف تلقائياً مع سطوعها.</div>`}`;
+    const dz=$('#dropZone');
+    $('#upBtn').onclick=()=>$('#imgInput').click();
+    if($('#upRemove'))$('#upRemove').onclick=()=>{state.imgData=null;state.imgLum=null;state.imgName='';state.img={zoom:1,ox:0,oy:0,bright:1,contrast:1,duotone:false,grain:false,vignette:false};$('#imgInput').value='';renderProps();update();};
+    $$('#modeChips .chip').forEach(c=>c.onclick=()=>{state.mode=c.dataset.mode;$$('#modeChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.mode===state.mode));update();});
+    $$('#props input[data-img]').forEach(r=>r.addEventListener('input',e=>{state.img[r.dataset.img]=+e.target.value;const out=r.parentElement.querySelector('.sv');if(out)out.textContent=(+e.target.value).toFixed(2);update();}));
+    $$('#fxChips .chip').forEach(c=>c.onclick=()=>{state.img[c.dataset.fx]=!state.img[c.dataset.fx];c.classList.toggle('active',state.img[c.dataset.fx]);update();});
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dz-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('dz-over'));
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dz-over');loadImgFile(e.dataTransfer.files[0]);});
+  }
+  else if(state.section==='layout'){
+    P.innerHTML=`
+      <div class="field"><label><i class="ti ti-arrows-move-vertical"></i> موضع العنوان <span class="sub">(ليقع على أغمق جزء)</span></label>
+        <div class="chips" id="posChips">
+          <button class="chip${state.titlePos==='top'?' active':''}" data-pos="top">أعلى</button>
+          <button class="chip${state.titlePos==='center'?' active':''}" data-pos="center">وسط</button>
+          <button class="chip${state.titlePos==='bottom'?' active':''}" data-pos="bottom">أسفل</button></div></div>
+      <div class="field"><label><i class="ti ti-arrows-vertical"></i> ضبط دقيق للارتفاع</label>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:#6a756f;width:36px">إزاحة</span><input type="range" id="offRange" min="-260" max="260" step="4" value="${state.titleOffset}" style="flex:1"><span id="offVal" style="font-size:11px;color:#6a756f;width:36px;text-align:left">${state.titleOffset}px</span></div></div>
+      <div class="hintbox"><i class="ti ti-bulb"></i> اختر موضعاً عاماً ثم اضبطه بدقّة بالمؤشّر. التعتيم الذكي يتبع العنوان تلقائياً ليبقى مقروءاً فوق الصورة.</div>`;
+    $$('#posChips .chip').forEach(c=>c.onclick=()=>{state.titlePos=c.dataset.pos;$$('#posChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.pos===state.titlePos));update();});
+    $('#offRange').addEventListener('input',e=>{state.titleOffset=+e.target.value;$('#offVal').textContent=state.titleOffset+'px';update();});
+  }
+  else if(state.section==='series'){
+    P.innerHTML=`
+      <button class="btn green" id="addSlideBtn"><i class="ti ti-plus"></i> أضِف البوستر الحالي للسلسلة</button>
+      <div class="field" style="margin-top:12px"><label>شرائح الحملة (${state.series.length})</label>
+        <div class="plist" id="slideList">${state.series.length?state.series.map((s,i)=>`<div class="pitem"><span class="pn" data-slideload="${i}"><i class="ti ti-photo"></i> شريحة ${i+1}</span><button class="del" data-slidedel="${i}" aria-label="حذف"><i class="ti ti-trash"></i></button></div>`).join(''):'<div style="font-size:11.5px;color:#9aa49d;padding:4px 2px">لا شرائح بعد. أضِف البوستر الحالي.</div>'}</div></div>
+      ${state.series.length?`<button class="btn primary" id="expSeriesBtn"><i class="ti ti-package"></i> صدّر السلسلة كاملة (${state.series.length})</button>`:''}
+      <div class="hintbox" style="margin-top:12px"><i class="ti ti-bulb"></i> وحّد الوسم من قسم «الهوية» ليتسق عبر الحملة. كل شريحة تحفظ كامل إعداداتها (نص/صورة/مقاس).</div>`;
+    $('#addSlideBtn').onclick=addSlide;
+    if($('#expSeriesBtn'))$('#expSeriesBtn').onclick=exportSeries;
+    $$('#slideList [data-slideload]').forEach(x=>x.onclick=()=>selectSlide(+x.dataset.slideload));
+    $$('#slideList [data-slidedel]').forEach(x=>x.onclick=()=>deleteSlide(+x.dataset.slidedel));
+  }
+  else if(state.section==='export'){
+    const prompt=d?buildPrompt(d):'';
+    P.innerHTML=`
+      <div class="field"><label><i class="ti ti-aspect-ratio"></i> المقاس</label><div class="chips" id="fmtChips">
+        ${Object.entries(FMT).map(([k,v])=>`<button class="chip${state.format===k?' active':''}" data-fmt="${k}">${v.label.split(' · ')[0]}</button>`).join('')}</div></div>
+      <button class="btn primary" id="dlBtn"><i class="ti ti-download"></i> حمّل البطاقة PNG</button>
+      <div class="row" style="margin-top:9px"><button class="btn ghost sm" id="copyAllBtn"><i class="ti ti-copy"></i> انسخ النص</button><button class="btn ghost sm" id="copyPromptBtn"><i class="ti ti-code"></i> انسخ البرومبت</button></div>
+      <div class="field" style="margin-top:16px"><label><i class="ti ti-device-floppy"></i> مشاريعي</label>
+        <div class="row"><input type="text" id="projName" placeholder="اسم المشروع" style="flex:1"><button class="btn green sm" id="saveProjBtn" style="flex:0 0 70px"><i class="ti ti-plus"></i> حفظ</button></div>
+        <div class="plist" id="projList"></div></div>
+      <div class="field" style="margin-top:16px"><label><i class="ti ti-prompt"></i> نوع البرومبت</label><div class="chips" id="pmChips">
+        <button class="chip${state.promptMode==='plate'?' active':''}" data-pm="plate">خلفية فقط · موصى</button>
+        <button class="chip${state.promptMode==='full'?' active':''}" data-pm="full">بوستر كامل</button></div>
+        <div class="hintbox" style="margin-top:8px">${state.promptMode==='plate'?'<i class="ti ti-check"></i> يصف الخلفية فقط؛ الاستوديو يركّب العقاب والنص فوقها (أنظف وأدقّ).':'<i class="ti ti-alert-triangle"></i> يطلب بوستراً كاملاً بالنص من الـAI — مفيد للتوليد المباشر، لكن قد تتكسّر العربية في بعض المولّدات.'}</div></div>
+      <details class="prompt" style="margin-top:10px" open><summary><i class="ti ti-code"></i> ${state.promptMode==='full'?'برومبت البوستر الكامل':'برومبت الخلفية (للدمج)'}</summary>
+        <div class="prompt-box">${d?esc(prompt):'ولّد المحتوى أولاً لإظهار البرومبت.'}</div></details>
+      <div class="hintbox" style="margin-top:12px"><i class="ti ti-rocket"></i> النشر على GitHub Pages لرابط مباشر يأتي عبر زر «نشر» (سكيل النشر).</div>`;
+    if(d){
+      $('#dlBtn').onclick=exportPNG;
+      $('#copyAllBtn').onclick=()=>copy(`${d.head}\n${d.sub}\n${d.slogan}\n${d.tag} ${d.ent.handle}\n\n— فكرة الصورة —\n${d.concept.ar}\n\n— البرومبت —\n${prompt}`);
+      $('#copyPromptBtn').onclick=()=>copy(prompt);
+    } else { $('#dlBtn').onclick=()=>toast('ولّد المحتوى أولاً'); }
+    $('#saveProjBtn').onclick=()=>{const n=$('#projName').value.trim()||('مشروع '+new Date().toLocaleDateString('ar'));saveProject(n);$('#projName').value='';};
+    $$('#fmtChips .chip').forEach(c=>c.onclick=()=>{state.format=c.dataset.fmt;$$('#fmtChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.fmt===state.format));$('#fmtLabel').textContent=FMT[state.format].label;update();});
+    $$('#pmChips .chip').forEach(c=>c.onclick=()=>{state.promptMode=c.dataset.pm;renderProps();});
+    renderProjList();
+  }
+}
+
+function genTextHTML(d){
+  const edited=k=>state.over[k]!=null;
+  return `<div class="gentext">
+    <div class="ginput"><label>العنوان الرئيسي ${edited('head')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v head" data-ov="head" value="${escAttr(d.head)}"></div>
+    <div class="ginput"><label>السطر الداعم ${edited('sub')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v" data-ov="sub" value="${escAttr(d.sub)}"></div>
+    <div class="ginput"><label>الشعار الختامي ${edited('slogan')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v" data-ov="slogan" value="${escAttr(d.slogan)}"></div>
+    <div class="ginput"><label>الوسم</label><input type="text" class="v" data-ov="tag" value="${escAttr(d.tag)}"></div>
+    <div class="ginput"><label>فكرة الصورة (الاستعارة)</label><div class="v" style="background:var(--cream)">${esc(d.concept.ar)}</div></div>
+    <details class="prompt"><summary><i class="ti ti-code"></i> ${state.promptMode==='full'?'برومبت البوستر الكامل':'برومبت الخلفية (بلا نص/شعار)'}</summary><div class="prompt-box">${esc(buildPrompt(d))}</div></details>
+  </div>`;
+}
+function warnHTML(d){const w=warnings(d);if(!w.length)return '';return `<div style="background:#fbeee0;border:1px solid #e8c98e;border-radius:10px;padding:9px 11px;margin-bottom:10px;font-size:11.5px;color:#7a5a1c;line-height:1.6">${w.map(x=>`<div><i class="ti ti-alert-triangle" style="vertical-align:-2px"></i> ${x}</div>`).join('')}</div>`;}
+function wireGenText(){
+  $$('#genText input[data-ov]').forEach(inp=>{
+    inp.addEventListener('input',e=>{state.over[inp.dataset.ov]=e.target.value;update();});
+    inp.addEventListener('blur',()=>{const k=inp.dataset.ov;if(k==='tag'&&state.over.tag)state.over.tag=normTag(state.over.tag);if(state.section==='content')renderProps();});
+  });
+}
+
+/* ============ IMAGE LOAD ============ */
+function loadImgFile(f){
+  if(!f||!f.type.startsWith('image/'))return;
+  const r=new FileReader();
+  r.onload=()=>{state.imgData=r.result;state.imgName=f.name;loadImage(state.imgData).then(im=>{state.imgLum=bandLum(im);if(state.section==='image')renderProps();update();}).catch(()=>{if(state.section==='image')renderProps();update();});toast('أُضيفت الصورة ✓');};
+  r.readAsDataURL(f);
+}
+$('#imgInput').addEventListener('change',e=>loadImgFile(e.target.files[0]));
+
+/* ============ TOPBAR + INIT ============ */
+$$('#sidebar .nav').forEach(n=>n.onclick=()=>selectSection(n.dataset.sec));
+$('#exportTop').onclick=exportPNG;
+$('#paletteToggle').onclick=()=>{state.palette=state.palette==='dark'?'light':'dark';if(state.section==='brand')renderProps();update();toast('الباليتة: '+(state.palette==='dark'?'أخضر داكن':'كريمي فاتح'));};
+$('#publishTop').onclick=()=>toast('النشر عبر سكيل khaldoun-publish — قل «انشرها»');
+$('#fsAdd').onclick=addSlide;
+$('#fsExportAll').onclick=exportSeries;
+$('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();if(e.shiftKey)redo();else undo();}});
+
+function setTone(){}
+try{const a=localStorage.getItem(AKEY);if(a)restore(a);}catch(e){}
+try{const sv=localStorage.getItem(SKEY);if(sv)state.series=JSON.parse(sv)||[];}catch(e){}
+$('#fmtLabel').textContent=FMT[state.format].label;
+hist=[snapshot()];hi=0;updUndo();
+renderFilmstrip();
+selectSection('content');
+if(state.last)refreshPreview();
+</script>
+</body>
+</html>
