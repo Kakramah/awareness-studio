@@ -108,6 +108,12 @@
   label.check{display:flex;align-items:center;gap:9px;cursor:pointer;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:'Tajawal';font-weight:500;font-size:13px;color:var(--green)}
   label.check input{width:17px;height:17px;accent-color:var(--green)}
   .hintbox{font-size:11.5px;color:#8a948e;line-height:1.6;background:var(--cream);border:1px dashed var(--line);border-radius:10px;padding:11px 12px}
+  .ideas{display:flex;flex-direction:column;gap:7px}
+  .idea{text-align:right;background:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px 11px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .15s,transform .12s;font-family:inherit}
+  .idea:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .idea .idev{align-self:flex-start;font-size:9.5px;font-weight:700;font-family:'Cairo';color:#0E342F;background:var(--gold-soft,#C9A86A);border-radius:8px;padding:2px 8px}
+  .idea .ihead{font-family:'Cairo';font-weight:900;font-size:13.5px;color:var(--green);line-height:1.45}
+  .idea .icpt{font-size:11px;color:#77827b;line-height:1.55}
   input[type=range]{-webkit-appearance:none;appearance:none;height:4px;background:var(--line2);border-radius:3px;outline:none}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #fff}
   input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid #fff}
@@ -215,7 +221,7 @@ const SECTIONS={
 };
 
 let state={
-  section:'content', topicQuery:'', topicId:null, tone:'warn', seed:0, last:null,
+  section:'content', topicQuery:'', topicId:null, tone:'warn', seed:0, last:null, device:'auto', usedIdeas:{},
   entIdx:0, palette:'dark', imgData:null, imgLum:null, imgName:'', mode:'full',
   titlePos:'top', titleOffset:0, campTag:'', watermark:false, wmText:'هذا الإعلان غير حكومي',
   over:{}, img:{zoom:1,ox:0,oy:0,bright:1,contrast:1,duotone:false,grain:false,vignette:false},
@@ -226,25 +232,79 @@ function curD(){if(!state.last)return null;const o=state.over;return Object.assi
   head:o.head!=null?o.head:state.last.head, sub:o.sub!=null?o.sub:state.last.sub,
   slogan:o.slogan!=null?o.slogan:state.last.slogan, tag:o.tag!=null?o.tag:state.last.tag });}
 
-/* ============ ENGINE (generation + canvas render) ============ */
+/* ============ ENGINE v2 (idea composer + canvas render) ============ */
 const pick=(arr,seed)=>arr[(seed%arr.length+arr.length)%arr.length];
 function matchTopic(v){if(!v)return null;const low=v.toLowerCase();return AW_TOPICS.find(t=>t.label===v||t.kw.some(k=>low.includes(k)));}
 function normTag(s){s=String(s||'').trim();if(!s)return '';if(s[0]!=='#')s='#'+s;return s.replace(/\s+/g,'_');}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const devLabel=id=>{const d=AW_DEVICES.find(x=>x.id===id);return d?d.label:(id==='classic'?'كلاسيكي':id);};
+
+/* يختار فكرة متماسكة: من بنك الموضوع، أو توليفاً حراً (قالب أسلوب × وصفة بصرية) */
+function composeIdea(t,raw,dev,rng,noHistory){
+  if(t&&AW_IDEAS[t.id]){
+    if(dev==='classic'){
+      const s=Math.floor(rng()*4);
+      return {dev:'classic',head:pick(t.heads,s),sub:pick(t.subs,s),slogan:pick(t.slogans,s),concept:pick(t.concepts,s)};
+    }
+    const bank=AW_IDEAS[t.id];
+    let pool=bank.map((idea,i)=>({idea,i})).filter(x=>dev==='auto'||x.idea.dev===dev);
+    if(!pool.length) pool=bank.map((idea,i)=>({idea,i}));
+    if(!noHistory){
+      const used=state.usedIdeas[t.id]||[];
+      const fresh=pool.filter(x=>!used.includes(x.i));
+      if(fresh.length) pool=fresh; else state.usedIdeas[t.id]=[];
+    }
+    const x=pool[Math.floor(rng()*pool.length)];
+    if(!noHistory){(state.usedIdeas[t.id]=state.usedIdeas[t.id]||[]).push(x.i);}
+    return Object.assign({},x.idea);
+  }
+  /* موضوع حر: أسلوب × وصفة */
+  const devId=(dev==='auto'||dev==='classic')?AW_DEVICES[Math.floor(rng()*AW_DEVICES.length)].id:dev;
+  const g=AW_GENERIC_DEV[devId], r=AW_RECIPES[Math.floor(rng()*AW_RECIPES.length)];
+  return {dev:devId,head:g.head(raw),sub:g.sub(raw),slogan:pick(AW_GENERIC.slogans,Math.floor(rng()*4)),
+    concept:{ar:r.ar(raw),en:r.en(raw)}};
+}
 
 function generate(reshuffle){
   const raw=(state.topicQuery||'').trim();
   if(!raw && !state.topicId){toast('اكتب موضوعاً أولاً');return;}
-  if(reshuffle) state.seed++; else state.seed=0;
-  const s=state.seed, ent=AW_ENTITIES[state.entIdx], tone=state.tone;
-  let head,sub,slogan,tag,concept,topicLabel;
+  if(reshuffle) state.seed++; else state.seed=Math.floor(Math.random()*1e6);
+  const ent=AW_ENTITIES[state.entIdx], tone=state.tone;
   const t=state.topicId?AW_TOPICS.find(x=>x.id===state.topicId):matchTopic(raw);
-  if(t){topicLabel=t.label;head=pick(t.heads,s);sub=pick(t.subs,s);slogan=pick(t.slogans,s);tag=pick(t.tags,s);concept=pick(t.concepts,s);}
-  else{topicLabel=raw;head=pick(AW_GENERIC.heads(raw),s);sub=pick(AW_GENERIC.subs(raw),s);slogan=pick(AW_GENERIC.slogans,s);tag=pick(AW_GENERIC.tags(raw),s);concept=pick(AW_GENERIC.concepts(raw),s);}
+  const rng=mulberry32(state.seed*2654435761+1);
+  const idea=composeIdea(t,raw,state.device,rng,false);
+  let tag=t?pick(t.tags,Math.floor(rng()*t.tags.length)):pick(AW_GENERIC.tags(raw),0);
   if(state.campTag&&state.campTag.trim()) tag=normTag(state.campTag);
-  state.last={head,sub,slogan,tag,concept,ent,tone,topicLabel};
+  state.last={head:idea.head,sub:idea.sub,slogan:idea.slogan,tag,concept:idea.concept,ent,tone,topicLabel:t?t.label:raw,dev:idea.dev};
   state.over={};
   if(state.section==='content') renderProps();
   update();
+}
+
+/* عصف أفكار: ٦ أفكار بأساليب مختلفة إلزاماً */
+let brainIdeas=null;
+function brainstorm(){
+  const raw=(state.topicQuery||'').trim();
+  if(!raw && !state.topicId){toast('اكتب موضوعاً أولاً');return;}
+  const t=state.topicId?AW_TOPICS.find(x=>x.id===state.topicId):matchTopic(raw);
+  const rng=mulberry32(Date.now()%1e9);
+  let devs;
+  if(t&&AW_IDEAS[t.id]){devs=AW_IDEAS[t.id].map(x=>x.dev);}
+  else{devs=AW_DEVICES.map(d=>d.id).sort(()=>rng()-.5).slice(0,6);}
+  brainIdeas=devs.slice(0,6).map(dv=>composeIdea(t,raw,dv,rng,true));
+  renderProps();
+}
+function applyIdea(i){
+  const idea=brainIdeas&&brainIdeas[i]; if(!idea)return;
+  const raw=(state.topicQuery||'').trim();
+  const t=state.topicId?AW_TOPICS.find(x=>x.id===state.topicId):matchTopic(raw);
+  const ent=AW_ENTITIES[state.entIdx];
+  let tag=t?t.tags[0]:AW_GENERIC.tags(raw)[0];
+  if(state.campTag&&state.campTag.trim()) tag=normTag(state.campTag);
+  if(t&&AW_IDEAS[t.id]){const bi=AW_IDEAS[t.id].findIndex(x=>x.head===idea.head);if(bi>-1)(state.usedIdeas[t.id]=state.usedIdeas[t.id]||[]).push(bi);}
+  state.last={head:idea.head,sub:idea.sub,slogan:idea.slogan,tag,concept:idea.concept,ent,tone:state.tone,topicLabel:t?t.label:raw,dev:idea.dev};
+  state.over={};brainIdeas=null;
+  renderProps();update();toast('طُبّقت الفكرة ✓');
 }
 
 function fmtAR(){return state.format==='story'?'9:16  (1080x1920)':state.format==='square'?'1:1  (1080x1080)':'4:5  (1080x1350)';}
@@ -410,7 +470,7 @@ async function refreshPreview(){
 function update(){ if(state.last){ refreshPreview(); pushHist(); autosave(); const wb=$('#warnBox'); if(wb) wb.innerHTML=warnHTML(curD()); } }
 
 /* ===== history (undo/redo) ===== */
-const SNAP_KEYS=['topicQuery','topicId','tone','seed','last','over','entIdx','palette','imgData','imgLum','imgName','mode','titlePos','titleOffset','campTag','watermark','wmText','img','format','promptMode'];
+const SNAP_KEYS=['topicQuery','topicId','tone','seed','last','over','entIdx','palette','imgData','imgLum','imgName','mode','titlePos','titleOffset','campTag','watermark','wmText','img','format','promptMode','device','usedIdeas'];
 function snapshot(){const o={};SNAP_KEYS.forEach(k=>o[k]=state[k]);return JSON.stringify(o);}
 function restore(s){const o=JSON.parse(s);SNAP_KEYS.forEach(k=>{if(k in o)state[k]=o[k];});}
 let hist=[],hi=-1,histT;
@@ -507,15 +567,32 @@ function renderProps(){
         <input type="text" id="topicInput" placeholder="مثال: السباحة في النهر… أو اكتب موضوعاً" value="${escAttr(state.topicQuery)}" autocomplete="off"></div>
       <div class="field"><label>مواضيع جاهزة</label><div class="chips" id="topicChips">${AW_TOPICS.map(t=>`<button class="chip${state.topicId===t.id?' active':''}" data-id="${t.id}"><span>${t.emoji}</span>${t.label}</button>`).join('')}</div></div>
       <div class="field"><label>النبرة</label><div class="chips" id="toneChips">${Object.entries(AW_TONES).map(([k,v])=>`<button class="chip${state.tone===k?' active':''}" data-tone="${k}" title="${v.note}">${v.label}</button>`).join('')}</div></div>
-      <div class="row" style="margin-bottom:14px"><button class="btn primary" id="genBtn"><i class="ti ti-sparkles"></i> ولّد المحتوى</button><button class="btn ghost" id="shuffleBtn" style="flex:0 0 46px"><i class="ti ti-refresh"></i></button></div>
+      <div class="field"><label><i class="ti ti-wand"></i> الأسلوب البلاغي</label><div class="chips" id="devChips">
+        <button class="chip${state.device==='auto'?' active':''}" data-dev="auto" title="يختار أسلوباً جديداً كل مرة">تلقائي</button>
+        ${AW_DEVICES.map(dv=>`<button class="chip${state.device===dv.id?' active':''}" data-dev="${dv.id}" title="${dv.hint}">${dv.label}</button>`).join('')}
+        <button class="chip${state.device==='classic'?' active':''}" data-dev="classic" title="البنك التقريري القديم">كلاسيكي</button></div></div>
+      <div class="row" style="margin-bottom:14px">
+        <button class="btn primary" id="genBtn"><i class="ti ti-sparkles"></i> ولّد المحتوى</button>
+        <button class="btn ghost" id="brainBtn" title="٦ أفكار بأساليب مختلفة" style="flex:0 0 auto"><i class="ti ti-bolt"></i> عصف ٦</button>
+        <button class="btn ghost" id="shuffleBtn" title="فكرة أخرى" style="flex:0 0 46px"><i class="ti ti-refresh"></i></button></div>
+      ${brainIdeas?`<div class="field"><label><i class="ti ti-bolt"></i> اختر فكرة</label><div class="ideas" id="ideaGrid">
+        ${brainIdeas.map((it,i)=>`<button class="idea" data-i="${i}">
+          <span class="idev">${devLabel(it.dev)}</span>
+          <span class="ihead">${esc(it.head)}</span>
+          <span class="icpt">${esc(it.concept.ar)}</span></button>`).join('')}
+      </div><button class="btn ghost" id="brainClose" style="width:100%;margin-top:8px"><i class="ti ti-x"></i> إغلاق العصف</button></div>`:''}
       <div id="warnBox">${d?warnHTML(d):''}</div>
       <div id="genText">${d?genTextHTML(d):'<div class="hintbox">اكتب موضوعاً أو اختر من الجاهز، ثم اضغط «ولّد المحتوى». ستظهر النصوص هنا وتُرسم البطاقة فوراً.</div>'}</div>`;
     $('#topicInput').addEventListener('input',e=>{state.topicQuery=e.target.value;const m=matchTopic(e.target.value.trim());state.topicId=m?m.id:null;$$('#topicChips .chip').forEach(c=>c.classList.toggle('active',m&&c.dataset.id===m.id));});
     $('#topicInput').addEventListener('keydown',e=>{if(e.key==='Enter')generate(false);});
     $$('#topicChips .chip').forEach(c=>c.onclick=()=>{state.topicId=c.dataset.id;state.topicQuery=AW_TOPICS.find(x=>x.id===c.dataset.id).label;$('#topicInput').value=state.topicQuery;$$('#topicChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.id===c.dataset.id));const tp=AW_TOPICS.find(x=>x.id===c.dataset.id);state.tone=tp.tone;state.palette=AW_TONES[tp.tone].dark?'dark':'light';$$('#toneChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.tone===state.tone));});
     $$('#toneChips .chip').forEach(c=>c.onclick=()=>{state.tone=c.dataset.tone;state.palette=AW_TONES[state.tone].dark?'dark':'light';$$('#toneChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.tone===state.tone));update();});
+    $$('#devChips .chip').forEach(c=>c.onclick=()=>{state.device=c.dataset.dev;$$('#devChips .chip').forEach(x=>x.classList.toggle('active',x.dataset.dev===state.device));});
     $('#genBtn').onclick=()=>generate(false);
+    $('#brainBtn').onclick=()=>brainstorm();
     $('#shuffleBtn').onclick=()=>generate(true);
+    $$('#ideaGrid .idea').forEach(b=>b.onclick=()=>applyIdea(+b.dataset.i));
+    const bc=$('#brainClose'); if(bc) bc.onclick=()=>{brainIdeas=null;renderProps();};
     wireGenText();
   }
   else if(state.section==='brand'){
@@ -622,6 +699,7 @@ function renderProps(){
 function genTextHTML(d){
   const edited=k=>state.over[k]!=null;
   return `<div class="gentext">
+    ${d.dev?`<div style="margin-bottom:8px"><span style="font-size:10px;font-weight:700;font-family:'Cairo';color:#0E342F;background:var(--gold-soft,#C9A86A);border-radius:8px;padding:3px 9px"><i class="ti ti-wand"></i> ${devLabel(d.dev)}</span></div>`:''}
     <div class="ginput"><label>العنوان الرئيسي ${edited('head')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v head" data-ov="head" value="${escAttr(d.head)}"></div>
     <div class="ginput"><label>السطر الداعم ${edited('sub')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v" data-ov="sub" value="${escAttr(d.sub)}"></div>
     <div class="ginput"><label>الشعار الختامي ${edited('slogan')?'<span style="color:var(--gold)">• معدّل</span>':''}</label><input type="text" class="v" data-ov="slogan" value="${escAttr(d.slogan)}"></div>
