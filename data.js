@@ -4,25 +4,27 @@
    النبرات: warn (تحذيرية) · honor (تكريمية) · rebuild (إعمارية)
    ============================================================ */
 
+/* حسابات الجهات فارغة عمداً (2026-09-24): لم يثبت وجود أيٍّ منها بمصدر.
+   لا يُضاف حساب إلا بعد التحقق منه على المنصّة نفسها. */
 window.AW_ENTITIES = [
-  { ar: "محافظة دمشق",        en: "DAMASCUS GOVERNORATE",      handle: "@DamascusGov" },
-  { ar: "محافظة ريف دمشق",    en: "RIF DIMASHQ GOVERNORATE",   handle: "@RifDimashqGov" },
-  { ar: "محافظة حلب",         en: "ALEPPO GOVERNORATE",        handle: "@AleppoGov" },
-  { ar: "محافظة حمص",         en: "HOMS GOVERNORATE",          handle: "@HomsGov" },
-  { ar: "محافظة حماة",        en: "HAMA GOVERNORATE",          handle: "@HamaGov" },
-  { ar: "محافظة اللاذقية",    en: "LATAKIA GOVERNORATE",       handle: "@LattakiaGov" },
-  { ar: "محافظة طرطوس",       en: "TARTOUS GOVERNORATE",       handle: "@TartousGov" },
-  { ar: "محافظة إدلب",        en: "IDLIB GOVERNORATE",         handle: "@IdlibGov" },
-  { ar: "محافظة درعا",        en: "DARAA GOVERNORATE",         handle: "@DaraaGov" },
-  { ar: "محافظة الرقة",       en: "RAQQA GOVERNORATE",         handle: "@raqqaagov" },
-  { ar: "محافظة دير الزور",   en: "DEIR EZZOR GOVERNORATE",    handle: "@DeirEzzorGov" },
-  { ar: "محافظة الحسكة",      en: "AL-HASAKAH GOVERNORATE",    handle: "@HasakahGov" },
-  { ar: "محافظة السويداء",    en: "AS-SUWAYDA GOVERNORATE",    handle: "@SuwaydaGov" },
-  { ar: "محافظة القنيطرة",    en: "QUNEITRA GOVERNORATE",      handle: "@QuneitraGov" },
-  { ar: "مديرية إعلام حماة",  en: "HAMA MEDIA DIRECTORATE",    handle: "@HamaMD" },
-  { ar: "مديرية إعلام الرقة", en: "RAQQA MEDIA DIRECTORATE",   handle: "@RaqqaMD" },
-  { ar: "مجلس مدينة جبلة",    en: "JABLEH CITY COUNCIL",       handle: "@JablehCity" },
-  { ar: "وزارة الصحة",        en: "MINISTRY OF HEALTH",        handle: "@SyrianMoH" }
+  { ar: "محافظة دمشق",        en: "DAMASCUS GOVERNORATE",      handle: "" },
+  { ar: "محافظة ريف دمشق",    en: "RIF DIMASHQ GOVERNORATE",   handle: "" },
+  { ar: "محافظة حلب",         en: "ALEPPO GOVERNORATE",        handle: "" },
+  { ar: "محافظة حمص",         en: "HOMS GOVERNORATE",          handle: "" },
+  { ar: "محافظة حماة",        en: "HAMA GOVERNORATE",          handle: "" },
+  { ar: "محافظة اللاذقية",    en: "LATAKIA GOVERNORATE",       handle: "" },
+  { ar: "محافظة طرطوس",       en: "TARTOUS GOVERNORATE",       handle: "" },
+  { ar: "محافظة إدلب",        en: "IDLIB GOVERNORATE",         handle: "" },
+  { ar: "محافظة درعا",        en: "DARAA GOVERNORATE",         handle: "" },
+  { ar: "محافظة الرقة",       en: "RAQQA GOVERNORATE",         handle: "" },
+  { ar: "محافظة دير الزور",   en: "DEIR EZZOR GOVERNORATE",    handle: "" },
+  { ar: "محافظة الحسكة",      en: "AL-HASAKAH GOVERNORATE",    handle: "" },
+  { ar: "محافظة السويداء",    en: "AS-SUWAYDA GOVERNORATE",    handle: "" },
+  { ar: "محافظة القنيطرة",    en: "QUNEITRA GOVERNORATE",      handle: "" },
+  { ar: "مديرية إعلام حماة",  en: "HAMA MEDIA DIRECTORATE",    handle: "" },
+  { ar: "مديرية إعلام الرقة", en: "RAQQA MEDIA DIRECTORATE",   handle: "" },
+  { ar: "مجلس مدينة جبلة",    en: "JABLEH CITY COUNCIL",       handle: "" },
+  { ar: "وزارة الصحة",        en: "MINISTRY OF HEALTH",        handle: "" }
 ];
 
 window.AW_TONES = {
@@ -37,7 +39,7 @@ window.AW_TOPICS = [
     id: "phone-driving", label: "الهاتف أثناء القيادة", emoji: "📱", tone: "warn",
     kw: ["هاتف","قيادة","سياقة","سواقة","موبايل","تلفون","سيارة","طريق","حادث"],
     heads: ["ثوانٍ على الهاتف قد تكلّفك الكثير","نظرةٌ واحدةٌ تكفي لتخسر كلَّ شيء","عينُك على الشاشة… حياتُك على المحك","رسالةٌ لا تساوي عمراً"],
-    subs:  ["مصيرك بيدك، لا على شاشتك","الطريق لا يمنحك فرصةً ثانية","ارفع عينك… يكفي ربعُ ثانية لتنجو","أوقِف السيارة قبل أن ترد"],
+    subs:  ["مصيرك بيدك، لا على شاشتك","الطريق لا يمنحك فرصةً ثانية","ارفع عينك… فالطريق يتغيّر في لحظة","أوقِف السيارة قبل أن ترد"],
     slogans:["مصيرك بيدك","عينُك تحمي عمرك","الطريق أمانة","لا تراهن بحياتك"],
     tags:  ["#قيادة_آمنة","#مصيرك_بيدك","#لا_للتشتت_أثناء_القيادة"],
     concepts:[
@@ -211,7 +213,7 @@ window.AW_TOPICS = [
     id: "blood", label: "التبرع بالدم", emoji: "🩸", tone: "honor",
     kw: ["تبرع","دم","تبرّع","حياة","مريض","مستشفى"],
     heads: ["قطرةٌ منك… حياةٌ لغيرك","بين يديك أن تمنح عمراً","تبرّعُك جسرٌ بين قلبين","أنت بطلٌ لا يعرفه أحد"],
-    subs:  ["وحدةُ دمٍ تنقذ ثلاث أرواح","لا تنتظر الحاجة لتعطي","العطاءُ لا يكلّفك سوى دقائق","كن سبباً في نجاة"],
+    subs:  ["وحدةُ دمٍ قد تنقذ حتى ثلاث أرواح","لا تنتظر الحاجة لتعطي","العطاءُ لا يكلّفك سوى دقائق","كن سبباً في نجاة"],
     slogans:["تبرّع… تمنح حياة","دمُك حياة","العطاءُ بطولة","قطرةٌ تُحيي"],
     tags:  ["#تبرع_بالدم","#دمك_حياة","#كن_بطلاً"],
     concepts:[
@@ -258,12 +260,22 @@ window.AW_DEVICES = [
   { id:"twist",    label:"قلب المألوف",  hint:"نهاية غير متوقعة تقلب الصورة" }
 ];
 
-/* لكل موضوع ٦ أفكار متماسكة بأساليب مختلفة */
+/* لكل موضوع ٦ أفكار متماسكة بأساليب مختلفة
+   مصادر الأرقام (تحقّق 2026-09-24):
+   - ٢٠ دقيقة/سيجارة: Jackson, Jarvis & West, Addiction 2024 (UCL) — doi:10.1111/add.16757
+   - ١ كم/سا = ٤–٥٪ خطر حادث مميت: WHO, Road traffic injuries fact sheet
+   - قطرة/ثانية > ٣٠٠٠ غالون/سنة (≈١١٬٣٥٦ لتراً ≈ ٣١ لتراً يومياً): US EPA WaterSense, Fix a Leak Week
+   - الحزام ينقص خطر الوفاة ٤٥٪ لركاب المقعد الأمامي: NHTSA
+   - الطبخ أول أسباب حرائق البيوت، والطبخ المتروك أول عوامله: NFPA
+   - وحدة دم تنقذ حتى ثلاث أرواح، والتبرع ٨–١٠ دقائق: American Red Cross
+   - أبجدية أوغاريت نحو ١٤٠٠ ق.م، ٣٠ رمزاً، أقدم استعمال إداري واسع لأبجدية: Britannica
+   - ١٠٠ كم/سا × ٣ ثوانٍ = ٨٣ متراً: حساب مباشر
+   أي رقم جديد يدخل هذا البنك يُضاف مصدره هنا أولاً. */
 window.AW_IDEAS = {
   "phone-driving": [
-    { dev:"dialog",  head:"— وصلتَ يا بابا؟", sub:"رسالةٌ لم تُقرأ… وطريقٌ لم يكتمل", slogan:"أوقِف السيارة ثم أجب",
+    { dev:"dialog",  head:"«وصلتَ يا بابا؟»", sub:"رسالةٌ لم تُقرأ… وطريقٌ لم يكتمل", slogan:"أوقِف السيارة ثم أجب",
       concept:{ ar:"فقاعة رسالةٍ متوهجة معلّقة فوق زجاجٍ أماميٍّ مهشّم عند الغسق", en:"a glowing unread chat bubble hovering above a shattered windshield at dusk, single beam of light, cinematic minimal, no people" } },
-    { dev:"fact",    head:"ثلاثُ ثوانٍ = ملعبٌ أعمى", sub:"بسرعة ١٠٠ كم/سا تقطع ٨٣ متراً وأنت لا ترى", slogan:"ارفع عينك",
+    { dev:"fact",    head:"ثلاثُ ثوانٍ = ٨٣ متراً عمياء", sub:"بسرعة ١٠٠ كم/سا تقطع ٨٣ متراً وأنت لا ترى", slogan:"ارفع عينك",
       concept:{ ar:"طريقٌ ليليٌّ يتلاشى نصفه البعيد في سوادٍ تام كأنّ أحداً أطفأه", en:"a night highway whose far half dissolves into pure black as if switched off, headlights stopping mid-road, ominous cinematic" } },
     { dev:"persona", head:"أنا الطريق… لا أقرأ الرسائل", sub:"كلُّ التفاتةٍ عنّي أقتطعها من عمرك", slogan:"عينُك عليّ",
       concept:{ ar:"خطوط الطريق البيضاء تتحوّل فقاعاتِ محادثةٍ فارغة تمتد نحو الأفق", en:"white road lane-markings morphing into empty speech bubbles receding to the horizon, dawn light, surreal minimal" } },
@@ -279,7 +291,7 @@ window.AW_IDEAS = {
       concept:{ ar:"سطحُ نهرٍ هادئ يرسم انعكاسُه ظلاً غامضاً بلا ملامح", en:"a calm river surface whose reflection subtly forms a faceless silhouette, golden hour, eerie stillness" } },
     { dev:"fact",    head:"الغرق يحدث بصمت", sub:"لا صراخَ كما في الأفلام… ثوانٍ وينتهي كل شيء", slogan:"عينُك طوق نجاة",
       concept:{ ar:"ساعةُ يدٍ صغيرة مبتلّة توقّفت عقاربها، ملقاةٌ على حصى الضفة", en:"a small wet child's wristwatch stopped, lying on river pebbles, soft mournful light, macro" } },
-    { dev:"dialog",  head:"— أين وليد؟ … كان هنا قبل قليل", sub:"«قبل قليل»: أطولُ جملةٍ في حياة أمّ", slogan:"لا تغفل عنهم",
+    { dev:"dialog",  head:"«أين وليد؟» «كان هنا قبل قليل»", sub:"«قبل قليل»: أطولُ جملةٍ في حياة أمّ", slogan:"لا تغفل عنهم",
       concept:{ ar:"كرةُ شاطئٍ ملوّنة تطفو وحيدةً وسط نهرٍ عريض لا أحد حوله", en:"a colorful beach ball floating alone in the middle of a wide river, no one around, late afternoon, vast empty water" } },
     { dev:"whatif",  head:"ماذا لو تأخّرتْ نظرتُك؟", sub:"النهرُ لا يمهل أحداً", slogan:"راقب… تسلَم",
       concept:{ ar:"نظّاراتُ سباحةٍ صغيرة معلّقة على غصنٍ فوق ماءٍ داكنٍ يجري", en:"kids' swim goggles hanging on a bare branch above fast dark water, shallow focus, held breath" } },
@@ -295,7 +307,7 @@ window.AW_IDEAS = {
       concept:{ ar:"مفتاحٌ يذوب ويتحوّل قرصاً أبيض داخل كفٍّ مفتوحة", en:"a key melting into a white pill inside an open palm, macro, cream background, quiet dread" } },
     { dev:"whatif",  head:"ماذا لو قلتَها: لا؟", sub:"تخسر لحظةَ مجاملة… وتربح عمرك كله", slogan:"قوّتك في رفضك",
       concept:{ ar:"بابُ زنزانةٍ مفتوح يتسرّب منه ضوء فجرٍ ذهبي", en:"a prison cell door half-open with dawn light pouring through, hopeful, symbolic escape" } },
-    { dev:"dialog",  head:"— جرّب مرة… — صارت المرةُ عشراً", sub:"لا أحد خطّط يوماً أن يُدمن", slogan:"المرة الأولى فخ",
+    { dev:"dialog",  head:"«جرّب مرة…» صارت المرةُ عشراً", sub:"لا أحد خطّط يوماً أن يُدمن", slogan:"المرة الأولى فخ",
       concept:{ ar:"أحجارُ دومينو بيضاء كالحبوب تتساقط في خطٍّ نحو قضبان", en:"white domino pieces shaped like pills toppling in a line toward prison bars, dramatic low angle" } },
     { dev:"twist",   head:"يبدأ ضيفاً… وينتهي سجّاناً", sub:"الإدمان لا يستأذن أحداً", slogan:"أغلق الباب اليوم",
       concept:{ ar:"كرسيُّ ضيافةٍ وثير تنحني أرجلُه وترتفع قضباناً حول الجالس", en:"a welcoming armchair whose legs bend upward into cage bars around the seat, surreal minimal, muted palette" } },
@@ -305,13 +317,13 @@ window.AW_IDEAS = {
   "smoking": [
     { dev:"paradox", head:"تُشعلها… فتُطفئك", sub:"كلُّ سيجارةٍ تدخّنها تُدخّنك", slogan:"أطفئها الآن",
       concept:{ ar:"سيجارةٌ منتصبة كشمعة عيد ميلادٍ فوق كعكةٍ من رماد", en:"a cigarette standing like a birthday candle on a cake made entirely of gray ash, dark humor minimal" } },
-    { dev:"fact",    head:"سبعُ دقائق تحترق", sub:"كلُّ سيجارةٍ تسرق دقائقَ من عمرك", slogan:"استعد وقتك",
+    { dev:"fact",    head:"عشرون دقيقة تحترق", sub:"كلُّ سيجارةٍ تسرق نحو عشرين دقيقة من عمرك", slogan:"استعد وقتك",
       concept:{ ar:"ساعةٌ رملية رمالُها المتساقطة رمادُ سجائر", en:"an hourglass whose falling sand is cigarette ash, macro, moody studio light" } },
     { dev:"persona", head:"أنا رئتك… أختنق بصمت", sub:"أنظّف ما تُفسده كلَّ ليلة… إلى متى؟", slogan:"ارحمني",
       concept:{ ar:"شجرتان على هيئة رئتين: واحدةٌ مورقة وأخرى متفحّمة تدخّن", en:"two lung-shaped trees, one lush green, one charred and smoldering, split composition, still air" } },
     { dev:"whatif",  head:"ماذا لو كانت الأخيرة؟", sub:"قرارٌ واحد يُعيد لك أنفاسك", slogan:"ابدأ اليوم",
       concept:{ ar:"عقبُ سيجارةٍ مُطفأ مغروسٌ في تربة تنبت منه ورقةٌ خضراء", en:"a stubbed-out cigarette butt planted in dark soil with a fresh green sprout growing from it, hopeful macro" } },
-    { dev:"dialog",  head:"— متى تُقلع؟ … غداً", sub:"يقولها منذ عشر سنين… اجعل غدك اليوم", slogan:"اليوم لا غداً",
+    { dev:"dialog",  head:"«متى تُقلع؟» «غداً»", sub:"يقولها منذ عشر سنين… اجعل غدك اليوم", slogan:"اليوم لا غداً",
       concept:{ ar:"تقويمُ مكتبٍ تتصاعد من أوراقه خيوطُ دخانٍ إلا ورقةَ اليوم، فوقها عودُ ثقابٍ منطفئ", en:"a desk calendar with smoke wisps rising from every page except today's, where a spent match rests, no readable text" } },
     { dev:"call",    head:"يا من تدخّن قرب طفلك", sub:"هو يُدخّن معك… رغماً عنه", slogan:"هواؤه أمانة",
       concept:{ ar:"دخانُ سيجارةٍ يتشكّل قطارَ لعبةٍ يزحف نحو سرير طفل", en:"cigarette smoke forming the shape of a toy train drifting toward a child's crib, soft nursery light, unsettling calm" } }
@@ -325,9 +337,9 @@ window.AW_IDEAS = {
       concept:{ ar:"شارعٌ فجريّ يلمع بلاطُه، وعربةُ نظافةٍ تبتعد في الضباب", en:"a spotless dawn street glistening, a cleaning cart silhouetted walking away into mist, cinematic reverence" } },
     { dev:"whatif",  head:"ماذا لو غابوا يوماً واحداً؟", sub:"أربعٌ وعشرون ساعة بلا أياديهم… وتختنق المدينة", slogan:"قدّرهم",
       concept:{ ar:"كادرٌ منقسم للشارع نفسه: مشرقٌ نظيف، وغارقٌ بالأكياس", en:"split-frame of the same street: pristine and bright versus buried in garbage bags, harsh honest contrast" } },
-    { dev:"dialog",  head:"— لماذا يعمل ليلاً يا أمي؟", sub:"— كي تصحو مدينتُنا نظيفةً يا حبيبتي", slogan:"قصتهم تستحق",
+    { dev:"dialog",  head:"«لماذا يعمل ليلاً يا أمي؟»", sub:"«كي تصحو مدينتُنا نظيفةً يا حبيبتي»", slogan:"قصتهم تستحق",
       concept:{ ar:"ظلُّ عاملٍ تحت إنارة شارعٍ ليلية يرتسم على الجدار بطلاً بعباءة", en:"a night street-lamp casting a sanitation worker's shadow as a caped hero on the wall, tender cinematic" } },
-    { dev:"fact",    head:"قبل أذان الفجر يبدأون", sub:"آلافُ الكيلومترات تُكنس كلَّ ليلةٍ بصمت", slogan:"جهدُهم يُرى",
+    { dev:"fact",    head:"قبل أذان الفجر يبدأون", sub:"شوارعُ مدينتك تُكنس كلَّ ليلةٍ بصمت", slogan:"جهدُهم يُرى",
       concept:{ ar:"خطوطُ مكنسةٍ على رصيفٍ مبلّل تشبه دوّامات مجرّة", en:"broom sweep-lines on a wet pavement resembling galaxy swirls, overhead shot, dawn blue hour" } }
   ],
   "parks": [
@@ -339,33 +351,33 @@ window.AW_IDEAS = {
       concept:{ ar:"نصفُ الكادر حديقةٌ يابسة رمادية ونصفه عشبٌ مورق، بينهما خطٌّ مستقيم", en:"half-frame dead gray park, half lush green lawn, razor-straight dividing line, conceptual overhead" } },
     { dev:"call",    head:"يا جارَ الحديقة", sub:"غرسةٌ منك تُظلّل حيّاً كاملاً", slogan:"ازرع أثرك",
       concept:{ ar:"يدٌ تغرس شتلةً صغيرة وظلُّها على الأرض شجرةٌ وارفة", en:"a hand planting a tiny seedling whose ground shadow is a huge mature tree, warm afternoon light" } },
-    { dev:"dialog",  head:"— أين نلعب؟ … هنا كان ملعب", sub:"الأطفال لا ينسون أماكن الفرح", slogan:"أعيدوا لهم الملعب",
+    { dev:"dialog",  head:"«أين نلعب؟» «هنا كان ملعب»", sub:"الأطفال لا ينسون أماكن الفرح", slogan:"أعيدوا لهم الملعب",
       concept:{ ar:"كرةُ قدمٍ قديمة نصفُها مدفونٌ بالتراب وسط عشبٍ جاف", en:"an old half-buried football in dry weeds where a playground once stood, nostalgic golden light" } },
-    { dev:"fact",    head:"كلُّ حديقةٍ تعود = رئةٌ تعود", sub:"عشرات الحدائق على موعدٍ مع الإحياء", slogan:"سوريا تُزهر",
+    { dev:"fact",    head:"كلُّ حديقةٍ تعود = رئةٌ تعود", sub:"الحيُّ يتنفّس من حديقته", slogan:"سوريا تُزهر",
       concept:{ ar:"خريطةُ مدينةٍ من ترابٍ تنبت في نقاطها أوراقٌ خضرٌ صغيرة", en:"an aerial dirt-map of a city with tiny green leaves sprouting at scattered points, overhead macro" } }
   ],
   "seatbelt": [
     { dev:"paradox", head:"قيدٌ يُحرّرك", sub:"ثانيتان لربطه… وعمرٌ يشكرك", slogan:"اربط تسلم",
       concept:{ ar:"حزامُ أمانٍ يلتفّ على شكل قلبٍ فوق مقعدٍ فارغ", en:"a seatbelt curved into a heart shape across an empty car seat, soft cabin light" } },
-    { dev:"dialog",  head:"— المشوار قريب… — وكذلك كان الحادث", sub:"معظم الحوادث على بُعد دقائق من البيت", slogan:"مهما قصُر الطريق",
+    { dev:"dialog",  head:"«المشوار قريب…» وكذلك كان الحادث", sub:"الحادث لا يسأل عن طول المشوار", slogan:"مهما قصُر الطريق",
       concept:{ ar:"مفاتيحُ بيتٍ تتدلى من مقود سيارة، وخلفها زجاجٌ متشقق ضبابيّ", en:"house keys dangling from a car's steering column, a spider-cracked windshield softly blurred behind, dusk" } },
     { dev:"persona", head:"أنا الحزام… يدُك الثالثة", sub:"أُمسكك حين تعجز يداك", slogan:"لا تُهملني",
       concept:{ ar:"نسيجُ حزامٍ ممدود على هيئة ذراعٍ تحتضن صدر المقعد", en:"a seatbelt webbing shaped like a protective arm across the seat's chest, conceptual studio" } },
     { dev:"whatif",  head:"ماذا لو فرملتَ الآن؟", sub:"بلا حزام… أنت أولُ من يغادر السيارة", slogan:"اربطه قبل الحركة",
       concept:{ ar:"كوبُ قهوةٍ متجمّد في الهواء أمام زجاج السيارة", en:"a coffee cup frozen mid-air in front of a windshield, frozen-moment photography, suspended tension" } },
-    { dev:"fact",    head:"يُنصّف الخطر", sub:"الحزام أرخصُ تأمينٍ على حياتك", slogan:"ثانيتان تكفيان",
+    { dev:"fact",    head:"يُنقص خطر الموت ٤٥٪", sub:"الحزام أرخصُ تأمينٍ على حياتك", slogan:"ثانيتان تكفيان",
       concept:{ ar:"إبزيمُ حزامٍ يلمع كدرعٍ معدنيّ وسط عتمة المقصورة", en:"a seatbelt buckle gleaming like a metal shield in a dark car interior, macro hero shot" } },
     { dev:"call",    head:"يا من في المقعد الخلفي", sub:"الخلف ليس درعاً سحرياً", slogan:"الكل يربط",
       concept:{ ar:"ثلاثةُ أحزمةٍ مربوطة تلمع في مقصورةٍ ليلية كأوتار آلةٍ واحدة", en:"three fastened seatbelts glowing in a night cabin like strings of one instrument, family safety mood" } }
   ],
   "speeding": [
-    { dev:"fact",    head:"كلُّ ١٠ كم/سا تضاعف الخطر", sub:"الفيزياء لا تجامل أحداً", slogan:"خفّف تصل",
+    { dev:"fact",    head:"كيلومترٌ واحد يرفع الخطر", sub:"كلُّ ١ كم/سا زيادة ترفع خطر الحادث المميت ٤ إلى ٥٪", slogan:"خفّف تصل",
       concept:{ ar:"إبرةُ عدّاد سرعةٍ تنحني وتذوب بعد رقمها الأقصى", en:"a speedometer needle bending and melting past its limit, dashboard noir, surreal detail" } },
     { dev:"paradox", head:"توفّر دقيقةً… وتخسر العمر", sub:"أسرعُ طريقٍ للغياب: العجلة", slogan:"الوصول غاية",
       concept:{ ar:"ساعةُ يدٍ يلتف حولها طريقٌ سريع كحبلٍ مشدود", en:"a wristwatch with a highway wrapping around it like a tightening rope, conceptual macro" } },
     { dev:"persona", head:"أنا المنعطف الأخير", sub:"قابلني كثيرون مسرعين… ولم يكملوا الحكاية", slogan:"تمهّل عندي",
       concept:{ ar:"منعطفٌ جبليّ تقف عنده إشارةُ تحذيرٍ محنيّة كأنها تنحني حزناً", en:"a mountain road curve with a bent, bowed warning sign as if mourning, overcast mood, no text on sign" } },
-    { dev:"dialog",  head:"— لحق بالموعد؟", sub:"— هو الموعد الوحيد الذي لم يفوّته", slogan:"تأخيرُ ساعةٍ أهون",
+    { dev:"dialog",  head:"«لحق بالموعد؟»", sub:"«هو الموعد الوحيد الذي لم يفوّته»", slogan:"تأخيرُ ساعةٍ أهون",
       concept:{ ar:"كرسيٌّ فارغ على رأس طاولة اجتماعٍ والضوء ينسحب عنه ببطء", en:"an empty chair at the head of a meeting table, light slowly withdrawing from it, quiet grief" } },
     { dev:"whatif",  head:"ماذا لو سبقك طفلٌ بكرته؟", sub:"بسرعتك الحالية… هل ستتوقف؟", slogan:"السرعة قرار",
       concept:{ ar:"كرةٌ حمراء تتدحرج من الرصيف نحو منتصف شارعٍ فارغ", en:"a red ball rolling off a sidewalk into an empty street, low angle, held-breath moment" } },
@@ -375,13 +387,13 @@ window.AW_IDEAS = {
   "water": [
     { dev:"persona", head:"أنا القطرة… لا تحسبني قليلة", sub:"منّي يبدأ النهر، وبإهمالك ينتهي", slogan:"كل قطرةٍ وطن",
       concept:{ ar:"قطرةُ ماءٍ واحدة يتلألأ داخلها انعكاسُ نهرٍ كامل", en:"a single water drop containing the reflection of an entire river landscape, macro, crystalline" } },
-    { dev:"fact",    head:"صنبورٌ يقطر = ٢٠ لتراً يومياً", sub:"إصلاحٌ بسيط يوفّر نهراً صغيراً كل شهر", slogan:"رشّد يدُم",
+    { dev:"fact",    head:"قطرةٌ كلَّ ثانية = ٣٠ لتراً يومياً", sub:"صنبورٌ يقطر يهدر أكثر من ١١ ألف لتر في السنة", slogan:"رشّد يدُم",
       concept:{ ar:"صنبورٌ يقطر وتحته دلاءٌ تكبر تدريجياً حتى تصير خزاناً", en:"a dripping tap over buckets growing progressively into a huge water tank, escalating scale, clean studio" } },
     { dev:"whatif",  head:"ماذا لو فتحتَه فلم يجرِ؟", sub:"يومٌ واحد بلا ماء يعلّمك قيمته كلها", slogan:"لا تنتظر الدرس",
       concept:{ ar:"صنبورٌ مفتوح ينساب منه رملٌ ناعم بدل الماء", en:"an open faucet pouring fine dry sand instead of water, arid tone, stark minimal" } },
     { dev:"paradox", head:"يفيض عندك… ويغيب عن غيرك", sub:"ما تهدره هنا يُعطّش هناك", slogan:"الماء شراكة",
       concept:{ ar:"كوبٌ يفيض على طاولة، وفي عمق الكادر كوبٌ فارغ مقلوب", en:"an overflowing glass on a table, a distant empty overturned glass in the deep background, moral depth-of-field" } },
-    { dev:"dialog",  head:"— دقيقة فقط! … صارت الدقيقةُ نهراً", sub:"الهدر يتسلل بالدقائق", slogan:"انتبه للدقائق",
+    { dev:"dialog",  head:"«دقيقة فقط!» فصارت الدقيقةُ نهراً", sub:"الهدر يتسلل بالدقائق", slogan:"انتبه للدقائق",
       concept:{ ar:"ساعةُ حائطٍ تسيل أرقامُها قطراتِ ماء", en:"a wall clock whose numerals drip away as water droplets, surreal minimal, cream background" } },
     { dev:"call",    head:"يا من يغسل بالخرطوم", sub:"دلوان يكفيان… والباقي للحياة", slogan:"وفّر للأجيال",
       concept:{ ar:"خرطومُ ماءٍ ملفوف على شكل علامة استفهام تتدلى من طرفها قطرة", en:"a garden hose coiled into a question-mark shape, a single drop hanging at its tip, clean conceptual" } }
@@ -391,11 +403,11 @@ window.AW_IDEAS = {
       concept:{ ar:"مدينةٌ ليلية من الأعلى نصفها مضاء ونصفها معتم، وخيطُ ضوءٍ يعبر بينهما", en:"an aerial night city half-lit half-dark, a single thread of light crossing from bright to dark side, cinematic" } },
     { dev:"persona", head:"أنا الكهرباء… لا أحب السهر عبثاً", sub:"أطفئني حين تغادر، أصِلك حين تحتاج", slogan:"أطفئ ما لا يلزم",
       concept:{ ar:"مصباحٌ متوهج يتصبب قطراتِ ضوءٍ كأنه يعرق", en:"an incandescent bulb sweating glowing droplets of light, humorous surreal, dark background" } },
-    { dev:"fact",    head:"الشاحن الفارغ يسرق أيضاً", sub:"الأجهزة الخاملة تقتطع من فاتورتك بصمت", slogan:"افصل ما لا تستخدم",
+    { dev:"fact",    head:"وضعُ الانتظار يستهلك أيضاً", sub:"الأجهزة الموصولة وهي مطفأة تسحب كهرباءً بصمت", slogan:"افصل ما لا تستخدم",
       concept:{ ar:"شاحنٌ في الجدار تمتد منه خيوطُ ضوءٍ تُسحب من الغرفة كجذور", en:"a plugged wall charger drawing faint glowing threads from the room like roots, subtle night interior" } },
     { dev:"whatif",  head:"ماذا لو أطفأنا الزائد معاً؟", sub:"ساعةُ ترشيدٍ جماعي = مدينةٌ تتنفس", slogan:"معاً نضيء أطول",
       concept:{ ar:"أفقُ مدينةٍ تخفت لافتاتُها الزائدة وتبقى نوافذ البيوت دافئةً مضيئة", en:"a city skyline dimming its excess signage while warm home windows stay glowing, serene night" } },
-    { dev:"dialog",  head:"— من ترك الضوء مشتعلاً؟", sub:"— البيتُ كلُّه نام… والنورُ ساهرٌ وحده", slogan:"آخرُ الخارجين يطفئ",
+    { dev:"dialog",  head:"«من ترك الضوء مشتعلاً؟»", sub:"«البيتُ كلُّه نام… والنورُ ساهرٌ وحده»", slogan:"آخرُ الخارجين يطفئ",
       concept:{ ar:"مصباحٌ وحيد مضاء في بيتٍ نائم يرسم ظلاً أكبر من البيت", en:"one lit lamp in a sleeping house casting a shadow larger than the house itself, moody, quiet excess" } },
     { dev:"call",    head:"يا صاحب المكيّف السخيّ", sub:"درجةٌ واحدة أعلى توفّر الكثير", slogan:"درجةٌ تصنع فرقاً",
       concept:{ ar:"ورقةٌ بيضاء مطويّة على شكل مروحةِ يدٍ فوق طاولةٍ صيفية", en:"a plain white paper folded into a hand fan on a summer table, witty clean studio shot" } }
@@ -403,11 +415,11 @@ window.AW_IDEAS = {
   "fire": [
     { dev:"persona", head:"أنا الحريق… أبدأ صغيراً جداً", sub:"شرارة، فغفلة، فوليمة", slogan:"اخنقني مبكراً",
       concept:{ ar:"عودُ ثقابٍ مشتعل ينتصب كعملاقٍ وسط غرفة جلوسٍ مصغّرة", en:"a lit matchstick towering like a giant inside a miniature living-room diorama, scale-play, ominous" } },
-    { dev:"fact",    head:"مطبخُك أولُ المشتبهين", sub:"معظم حرائق البيوت تبدأ من موقدٍ مُهمَل", slogan:"لا تغادر والنار تعمل",
+    { dev:"fact",    head:"مطبخُك أولُ المشتبهين", sub:"الطبخُ أولُ أسباب حرائق البيوت، والموقدُ المتروك أخطرها", slogan:"لا تغادر والنار تعمل",
       concept:{ ar:"مقبضُ طنجرةٍ على موقد يمتد ظلُّه فتيلَ ديناميت", en:"a pot handle on a stove casting a shadow shaped like a lit dynamite fuse, kitchen noir" } },
     { dev:"whatif",  head:"ماذا لو استيقظتَ على دخان؟", sub:"كاشفٌ صغير يشتري لك دقائقَ النجاة", slogan:"ركّب كاشف دخان",
       concept:{ ar:"كاشفُ دخانٍ يتوهج كنجمةِ حراسةٍ فوق سريرٍ نائم", en:"a smoke detector glowing like a guardian star above a sleeping bed, protective calm night" } },
-    { dev:"dialog",  head:"— أطفأتَ الغاز؟ … أظن", sub:"«أظن» لا تُطفئ حريقاً", slogan:"تفقّد قبل أن تغفو",
+    { dev:"dialog",  head:"«أطفأتَ الغاز؟» «أظن»", sub:"«أظن» لا تُطفئ حريقاً", slogan:"تفقّد قبل أن تغفو",
       concept:{ ar:"لقطةٌ قريبة جداً لمفتاح موقدٍ بين وضعَين وظلُّ شعلةٍ خافت يحوم", en:"extreme close-up of a stove knob caught between on and off, a faint flame shadow hovering, suspense macro" } },
     { dev:"paradox", head:"تدفئك… وتأكل بيتك", sub:"النار خادمٌ مطيع وسيّدٌ رهيب", slogan:"أبقِها خادماً",
       concept:{ ar:"مدفأةٌ دافئة يتسلل من طرف سجادتها خيطُ دخانٍ رفيع", en:"a cozy fireplace with one thin smoke thread rising from the rug's corner, hidden danger, warm-cold tension" } },
@@ -415,23 +427,23 @@ window.AW_IDEAS = {
       concept:{ ar:"سنابلُ قمحٍ ذهبية ينعكس عليها وهجٌ برتقاليّ بعيد", en:"golden wheat stalks reflecting a distant orange glow, dread at the horizon, rural dusk" } }
   ],
   "litter": [
-    { dev:"paradox", head:"ترميها بثانية… وتبقى قرناً", sub:"كيسُ النايلون يعيش أطول منا جميعاً", slogan:"مكانها السلة",
+    { dev:"paradox", head:"ترميها بثانية… وتبقى سنين", sub:"كيسُ النايلون يبقى بعد أن ننسى من رماه", slogan:"مكانها السلة",
       concept:{ ar:"كيسُ نايلون عالقٌ بغصنٍ عارٍ كرايةِ استسلام", en:"a plastic bag snagged on a bare branch like a surrender flag, gray sky, quiet shame" } },
     { dev:"persona", head:"أنا الشارع… ذاكرتي بصماتُكم", sub:"كلُّ ورقةٍ تُرمى توقيعٌ باسم صاحبها", slogan:"وقّع بجمالك",
       concept:{ ar:"رصيفٌ نظيف تلمع بلاطةٌ واحدة منه كمرآةٍ تعكس السماء", en:"a clean sidewalk with one tile shining like a mirror reflecting the sky, subtle civic pride" } },
-    { dev:"dialog",  head:"— السلةُ بعيدة…", sub:"— والمدينةُ أليست قريبةً من قلبك؟", slogan:"خطوتان تكفيان",
+    { dev:"dialog",  head:"«السلةُ بعيدة…»", sub:"«والمدينةُ أليست قريبةً من قلبك؟»", slogan:"خطوتان تكفيان",
       concept:{ ar:"سلةُ مهملاتٍ يرتسم ظلُّها طوقَ كرة سلة، وكرةٌ ورقية في الهواء", en:"a trash bin casting a basketball-hoop shadow, a crumpled paper ball frozen mid-air toward it, playful" } },
     { dev:"whatif",  head:"ماذا لو رمى الجميعُ مثلك؟", sub:"ورقةٌ من كل ساكنٍ = جبل", slogan:"ابدأ بورقتك",
       concept:{ ar:"ورقةٌ مكوّمة واحدة تتضاعف في مرايا متقابلة حتى تصير جبلاً", en:"one crumpled paper multiplied into a mountain through facing infinite mirrors, conceptual" } },
     { dev:"call",    head:"يا من نظّف بيته للعيد", sub:"الشارعُ بيتُك الثاني… والعيد يعمّ", slogan:"مدينتُك بيتُك",
       concept:{ ar:"ممسحةُ عتبةٍ تمتد وتتسع حتى تفرش الشارع كله كسجادة احتفال", en:"a doormat extending into an endless celebration carpet covering the whole street, warm festive light" } },
-    { dev:"fact",    head:"أصغرُ نفايةٍ أطولُ أثراً", sub:"عقبُ سيجارةٍ واحد يسمّم ماءً كثيراً", slogan:"صغيرةٌ لكن سامة",
+    { dev:"fact",    head:"أصغرُ نفايةٍ أطولُ أثراً", sub:"عقبُ سيجارةٍ واحد يُطلق سمومه في الماء", slogan:"صغيرةٌ لكن سامة",
       concept:{ ar:"عقبُ سيجارةٍ في بِركة ماءٍ تنتشر منه حلقاتٌ داكنة", en:"a cigarette butt in a clear puddle radiating dark ripple rings, macro, environmental noir" } }
   ],
   "bullying": [
     { dev:"persona", head:"أنا الكلمة… أَشفي وأجرح", sub:"اخترني بحكمة، فأثري لا يُمحى", slogan:"كلمتُك مسؤولية",
       concept:{ ar:"ريشةٌ بيضاء ناعمة تُلقي على الجدار ظلَّ سكين", en:"a soft white feather casting a sharp knife shadow on the wall, stark duality, single light" } },
-    { dev:"dialog",  head:"— كنا نمزح فقط…", sub:"— وهو لم يضحك يوماً", slogan:"انتبه لضحكتك",
+    { dev:"dialog",  head:"«كنا نمزح فقط…»", sub:"«وهو لم يضحك يوماً»", slogan:"انتبه لضحكتك",
       concept:{ ar:"بالونُ حفلةٍ مفرَّغ من الهواء وحيدٌ على أرض ملعب المدرسة", en:"a deflated party balloon alone on a schoolyard floor, muted colors, aftermath silence" } },
     { dev:"whatif",  head:"ماذا لو كان ابنُك الصامت؟", sub:"الضحية غالباً لا تتكلم… تنطفئ", slogan:"اسأل، احتضن، تدخّل",
       concept:{ ar:"حقيبةٌ مدرسية مغلقة ينبض من داخلها ضوءٌ خافت", en:"a closed school backpack with a faint light pulsing from inside, tender mystery, help unseen" } },
@@ -445,21 +457,21 @@ window.AW_IDEAS = {
   "heritage": [
     { dev:"persona", head:"أنا الحجر… حفظتُ أسماءكم", sub:"قرونٌ وأنا أحرس الحكاية، فاحرسوني", slogan:"تراثُنا هويتُنا",
       concept:{ ar:"عمودٌ أثريّ يلتفّ حوله وشاحٌ من ضوءٍ ذهبي", en:"an ancient column wrapped in a scarf of golden light, reverent dusk, temple silence" } },
-    { dev:"fact",    head:"أولُ أبجديةٍ وُلدت هنا", sub:"أوغاريت علّمت العالم أن يكتب", slogan:"سوريا أصل الحكاية",
+    { dev:"fact",    head:"من أقدم أبجديات العالم", sub:"أبجدية أوغاريت: ثلاثون حرفاً على رُقيمٍ طيني قبل ٣٤٠٠ عام", slogan:"سوريا أصل الحكاية",
       concept:{ ar:"رُقَيمٌ طينيّ مضاءٌ كجوهرةٍ في عتمة متحف", en:"a small clay tablet lit like a jewel in museum darkness, macro heritage grandeur" } },
     { dev:"whatif",  head:"ماذا لو نطقت القلعة؟", sub:"لحدّثتك عن ألف عامٍ من الصمود", slogan:"احفظ الذاكرة",
       concept:{ ar:"بوابةُ قلعةٍ تنبعث من فتحتها موجةُ صوتٍ ذهبية مرئية", en:"a citadel gate emitting a visible golden sound-wave ripple, magical documentary, twilight" } },
     { dev:"paradox", head:"ينهار بصمت… ويُبنى بوعي", sub:"الإهمالُ معول، والالتفاتةُ ترميم", slogan:"التفت إليه",
       concept:{ ar:"قوسٌ حجريّ نصفه يتفتت غباراً ونصفه يلتئم من الغبار نفسه", en:"a stone arch half crumbling to dust, half reassembling from the same dust, time-reversal split" } },
-    { dev:"dialog",  head:"— ما هذه الحجارة القديمة؟", sub:"— هذه أوراقُك الثبوتية يا ولدي", slogan:"جذورك عنوانك",
+    { dev:"dialog",  head:"«ما هذه الحجارة القديمة؟»", sub:"«هذه أوراقُك الثبوتية يا ولدي»", slogan:"جذورك عنوانك",
       concept:{ ar:"كفُّ طفلٍ على حجرٍ منقوش تتطابق خطوطُ كفّه مع النقش", en:"a child's palm resting on carved ancient stone, palm lines merging with the engraving, intimate macro" } },
     { dev:"call",    head:"يا من يخربش على الأثر", sub:"قلمُك يمحو ما عجزت عنه الحروب", slogan:"لا توقّع على التاريخ",
       concept:{ ar:"قلمٌ ضخم كمعولٍ أمام جدارٍ أثري وظلُّه يتراجع خجلاً", en:"a pencil looming like a pickaxe over an ancient wall, its shadow recoiling, guilt conceptual" } }
   ],
   "blood": [
-    { dev:"dialog",  head:"— لا أعرفه…", sub:"— لكنّ دمك عرفه قبل أن تلتقيا", slogan:"تبرّع تمنح حياة",
+    { dev:"dialog",  head:"«لا أعرفه…»", sub:"«لكنّ دمك عرفه قبل أن تلتقيا»", slogan:"تبرّع تمنح حياة",
       concept:{ ar:"خيطا دمٍ رفيعان يلتقيان في الهواء على هيئة مصافحة", en:"two slender red threads meeting mid-air in a handshake shape, white void, elegant minimal" } },
-    { dev:"fact",    head:"كيسٌ واحد = ثلاثُ أرواح", sub:"عشرُ دقائق منك… أعمارٌ لغيرك", slogan:"قطرةٌ تُحيي",
+    { dev:"fact",    head:"كيسٌ واحد = حتى ثلاث أرواح", sub:"عشرُ دقائق منك… أعمارٌ لغيرك", slogan:"قطرةٌ تُحيي",
       concept:{ ar:"كيسُ دمٍ يضيء كفانوسٍ في ممرّ مستشفى معتم", en:"a blood bag glowing like a lantern in a dim hospital corridor, hope light, cinematic" } },
     { dev:"whatif",  head:"ماذا لو احتجتَه غداً؟", sub:"تبرّعُ اليوم يُودَع في رصيد الجميع", slogan:"البنك الحقيقي",
       concept:{ ar:"حصّالةٌ زجاجية تسقط فيها قطرةٌ حمراء كعملةٍ ثمينة", en:"a glass piggy-bank receiving a single red drop like a precious coin, clean studio wit" } },
@@ -490,7 +502,7 @@ window.AW_GENERIC_DEV = {
   paradox: { head:()=>`صغيرةٌ في العين… كبيرةٌ في الأثر`,  sub:t=>`«${t}» لا يُقاس بحجمه بل بعاقبته` },
   persona: { head:t=>`لو نطق «${t}» لعاتبنا`,              sub:()=>`كلُّ إهمالٍ رسالةٌ نأسف عليها لاحقاً` },
   whatif:  { head:()=>`ماذا لو التفتنا اليوم؟`,             sub:t=>`غدُ «${t}» يُكتب بقرار اليوم` },
-  dialog:  { head:()=>`— ليس شأني… — بل شأنُنا جميعاً`,     sub:t=>`«${t}» مسؤوليةٌ لا تتجزأ` },
+  dialog:  { head:()=>`«ليس شأني…» «بل شأنُنا جميعاً»`,     sub:t=>`«${t}» مسؤوليةٌ لا تتجزأ` },
   fact:    { head:()=>`دقيقةُ وعيٍ تسبق الندم`,             sub:t=>`في «${t}» الوقايةُ أوفر دائماً` },
   call:    { head:()=>`يا من يمرّ سريعاً`,                  sub:t=>`توقف لحظةً عند «${t}»… تكفي لتغيّر شيئاً` },
   twist:   { head:()=>`ليس عادياً كما يبدو`,                sub:t=>`الاعتيادُ أخطرُ ما في «${t}»` }
