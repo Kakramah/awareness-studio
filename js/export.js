@@ -65,7 +65,7 @@ async function exportSeries(){
 }
 
 /* ---------- المشاريع والقوالب ---------- */
-function saveProject(name){if(!name)return;S.projects[name]={data:snapState(),at:Date.now()};DB.set('projects',S.projects).then(()=>toast('حُفظ المشروع ✓')).catch(saveFail);renderProps();}
+function saveProject(name){if(!name)return;const updating=!!S.projects[name];S.projects[name]={data:snapState(),at:Date.now()};DB.set('projects',S.projects).then(()=>toast(updating?'تحدّث المشروع ✓':'حُفظ المشروع ✓')).catch(saveFail);renderProps();}
 function loadProject(name){const p=S.projects[name];if(!p)return;loadSnap(p.data);toast('فُتح المشروع ✓');}
 function deleteProject(name){delete S.projects[name];DB.set('projects',S.projects).catch(saveFail);renderProps();}
 function saveTemplate(name){if(!name)return;S.templates[name]={doc:docToTemplate(S.doc),at:Date.now()};DB.set('templates',S.templates).then(()=>toast('حُفظ القالب ✓')).catch(saveFail);renderProps();}

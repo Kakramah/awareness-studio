@@ -18,7 +18,7 @@
 <link rel="icon" type="image/svg+xml" href="images/eagle-emblem-metal.svg">
 <link rel="preload" href="fonts/Cairo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 <div class="app">
@@ -108,7 +108,7 @@
 <!-- الاختصارات -->
 <div class="modal" id="helpModal" hidden>
   <div class="modal-card" style="width:min(640px,100%)">
-    <div class="modal-head"><h3><i class="ti ti-keyboard"></i> الاختصارات</h3><button class="tb-btn icon line" id="helpClose" style="color:var(--green);border-color:var(--line)"><i class="ti ti-x"></i></button></div>
+    <div class="modal-head"><h3><i class="ti ti-keyboard"></i> الاختصارات</h3><div class="row"><button class="btn ghost sm" id="welcomeReplay">كيف أبدأ؟</button><button class="tb-btn icon line" id="helpClose" style="color:var(--green);border-color:var(--line)"><i class="ti ti-x"></i></button></div></div>
     <div class="help-list">
       <div><span>تراجع · إعادة</span><span><kbd>Ctrl Z</kbd> <kbd>Ctrl Shift Z</kbd></span></div>
       <div><span>تحريك دقيق</span><span><kbd>←↑→↓</kbd> · <kbd>Shift</kbd> ×10</span></div>
@@ -128,24 +128,40 @@
   </div>
 </div>
 
+<!-- بداية الاستخدام -->
+<div class="modal" id="welcomeModal" hidden role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="modal-card welcome-card">
+    <div class="modal-head"><h3 id="welcomeTitle"><i class="ti ti-sparkles"></i> ابدأ تصميمك الأول</h3><button class="tb-btn icon line" id="welcomeClose" aria-label="إغلاق"><i class="ti ti-x"></i></button></div>
+    <div class="welcome-body">
+      <p>أنشئ منشوراً عربياً خطوة خطوة، وكل عملك يُحفظ تلقائياً في هذا المتصفح.</p>
+      <ol>
+        <li><b>اختر الفكرة والمقاس</b><span>ابدأ من «محتوى» لتوليد فكرة، ثم اختر منصة التصميم من «مقاس».</span></li>
+        <li><b>أضف صورتك وعدّلها</b><span>ارفع صورة من «صورة»، ثم اسحب عناصر اللوحة وعدّل نصوصها من «تحرير».</span></li>
+        <li><b>احفظ مشروعك أو صدّره</b><span>من «تصدير» احفظ نسخة قابلة للفتح لاحقاً أو نزّل التصميم بصيغة PNG أو JPG.</span></li>
+      </ol>
+      <div class="welcome-actions"><button class="btn primary" id="welcomeStart">ابدأ التصميم</button><span>يمكن فتح هذه المقدمة من زر المساعدة أعلى الصفحة.</span></div>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="imgInput" accept="image/*" hidden>
 <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" hidden>
 <div class="toast" id="toast">تم</div>
 
-<script src="assets/eagle-data.js?v=6"></script>
-<script src="assets/avatar-data.js?v=6"></script>
-<script src="data.js?v=6"></script>
-<script src="js/util.js?v=6"></script>
-<script src="js/storage.js?v=6"></script>
-<script src="js/fonts.js?v=6"></script>
-<script src="js/kits.js?v=6"></script>
-<script src="js/doc.js?v=6"></script>
-<script src="js/image.js?v=6"></script>
-<script src="js/render.js?v=6"></script>
-<script src="js/generator.js?v=6"></script>
-<script src="js/editor.js?v=6"></script>
-<script src="js/export.js?v=6"></script>
-<script src="js/panels.js?v=6"></script>
-<script src="js/app.js?v=6"></script>
+<script src="assets/eagle-data.js?v=8"></script>
+<script src="assets/avatar-data.js?v=8"></script>
+<script src="data.js?v=8"></script>
+<script src="js/util.js?v=8"></script>
+<script src="js/storage.js?v=8"></script>
+<script src="js/fonts.js?v=8"></script>
+<script src="js/kits.js?v=8"></script>
+<script src="js/doc.js?v=8"></script>
+<script src="js/image.js?v=8"></script>
+<script src="js/render.js?v=8"></script>
+<script src="js/generator.js?v=8"></script>
+<script src="js/editor.js?v=8"></script>
+<script src="js/export.js?v=8"></script>
+<script src="js/panels.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>

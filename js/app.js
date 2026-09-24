@@ -3,7 +3,7 @@ const S={
   doc:null,
   gen:{topicQuery:'',topicId:null,tone:'warn',seed:0,device:'auto',usedIdeas:{},last:null,campTag:'',promptMode:'plate'},
   sel:[],series:[],projects:{},templates:{},clip:null,styleClip:null,
-  ui:{section:'content',viewZ:1,grid:false,rulers:false,snap:true,safe:false,guides:[],slide:null,export:{type:'png',quality:92,scale:1},allFmts:['post','square','story','landscape']}
+  ui:{section:'content',viewZ:1,grid:false,rulers:false,snap:true,safe:false,guides:[],slide:null,topicCategory:'all',topicSearch:'',export:{type:'png',quality:92,scale:1},allFmts:['post','square','story','landscape']}
 };
 
 /* التاريخ: لقطة JSON للمستند والمولّد (الصور خارجها بـ imgId) */
@@ -93,6 +93,9 @@ function wireChrome(){
   $('#paletteToggle').onclick=()=>commit(()=>{S.doc.palette=S.doc.palette==='dark'?'light':'dark';});
   $('#helpTop').onclick=()=>{$('#helpModal').hidden=false;};
   $('#helpClose').onclick=()=>{$('#helpModal').hidden=true;};
+  const closeWelcome=()=>{$('#welcomeModal').hidden=true;DB.set('welcomeSeen',true).catch(saveFail);};
+  $('#welcomeStart').onclick=closeWelcome;$('#welcomeClose').onclick=closeWelcome;
+  $('#welcomeReplay').onclick=()=>{$('#helpModal').hidden=true;$('#welcomeModal').hidden=false;};
   $('#zoomIn').onclick=()=>setZoom(S.ui.viewZ*1.25);$('#zoomOut').onclick=()=>setZoom(S.ui.viewZ/1.25);$('#zoomLbl').onclick=()=>setZoom(1);
   $('#fsAdd').onclick=addSlide;$('#fsExportAll').onclick=exportSeries;
   $('#imgInput').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const tg=S._imgTarget||'photo';
@@ -122,4 +125,5 @@ function wireChrome(){
   autoLayout(S.doc);hist=[snapshot()];hi=0;updUndo();
   renderFilmstrip();selectSection('content');
   await document.fonts.ready;autoLayout(S.doc);renderPreview();
+  try{if(!await DB.get('welcomeSeen')&&!auto&&Object.keys(S.projects).length===0)$('#welcomeModal').hidden=false;}catch(e){}
 })();

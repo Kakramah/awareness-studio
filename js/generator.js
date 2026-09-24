@@ -1,6 +1,6 @@
 /* ===================== مولّد الأفكار (محرّك الإبداع v2، كما هو) =====================
    يملأ نصوص الطبقات ذات الأدوار: العنوان والسطر الداعم والشعار والوسم. */
-function matchTopic(v){if(!v)return null;const low=v.toLowerCase();return AW_TOPICS.find(t=>t.label===v||t.kw.some(k=>low.includes(k)));}
+function matchTopic(v){if(!v)return null;const low=v.toLocaleLowerCase();const exact=AW_TOPICS.find(t=>t.label===v);if(exact)return exact;return AW_TOPICS.filter(t=>t.kw.some(k=>low.includes(k))).sort((a,b)=>Math.max(...b.kw.filter(k=>low.includes(k)).map(k=>k.length))-Math.max(...a.kw.filter(k=>low.includes(k)).map(k=>k.length)))[0]||null;}
 const devLabel=id=>{const d=AW_DEVICES.find(x=>x.id===id);return d?d.label:(id==='classic'?'كلاسيكي':id);};
 function currentTopic(){const g=S.gen,raw=(g.topicQuery||'').trim();return g.topicId?AW_TOPICS.find(x=>x.id===g.topicId):matchTopic(raw);}
 
@@ -84,7 +84,7 @@ function buildPlatePrompt(doc){
   "aspect_ratio": "${fmtAR(doc)}",
   "scene": "${conceptOf().en}",
   "composition": "single cinematic metaphor, one subject, generous empty negative space. Keep the TOP-CENTER area clear (emblem placed later), and keep the ${zone} clean and slightly darker so the overlaid Arabic headline stays legible.",
-  "color_grade": "${doc.kit==='syria'?'deep pine-green ('+C('green')+'), bronze-gold accents ('+C('gold')+'), ivory cream ('+C('cream')+'), New-Syria identity mood':doc.kit==='khaldoun'?'deep navy ('+C('navy')+'), quiet gold ('+C('gold-quiet')+'), paper cream ('+C('paper')+')':'natural, true-to-life color'}",
+  "color_grade": "${KITS[doc.kit].promptGrade||(doc.kit==='syria'?'deep pine-green ('+C('green')+'), bronze-gold accents ('+C('gold')+'), ivory cream ('+C('cream')+'), New-Syria identity mood':doc.kit==='khaldoun'?'deep navy ('+C('navy')+'), quiet gold ('+C('gold-quiet')+'), paper cream ('+C('paper')+')':'natural, true-to-life color')}",
   "lighting": "${toneLight(S.gen.tone)}",
   "realism": "photographic, natural texture, no plastic 3D, no busy clutter, no multiple subjects",
   "negative_prompt": "no text, no Arabic or Latin letters, no captions, no typography, no logo, no eagle, no flag, no watermark, no badges, no UI frames or borders, no old-regime symbols"

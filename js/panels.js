@@ -41,7 +41,10 @@ function secContent(){
   const g=S.gen,d=S.doc;const L=r=>byRole(d,r);
   return `
   <div class="field"><label><i class="ti ti-bulb"></i> موضوع التوعية</label><input type="text" id="topicInput" placeholder="اكتب موضوعاً أو اختر من الجاهز" value="${escAttr(g.topicQuery)}" autocomplete="off"></div>
-  <div class="field"><label>مواضيع جاهزة</label><div class="chips" id="topicChips">${AW_TOPICS.map(t=>`<button class="chip${g.topicId===t.id?' active':''}" data-id="${t.id}"><span>${t.emoji}</span>${t.label}</button>`).join('')}</div></div>
+  <div class="field"><label>مواضيع جاهزة (${AW_TOPICS.length})</label><div class="chips topic-categories" id="topicCategories">${AW_TOPIC_CATEGORIES.map(c=>{const count=c.id==='all'?AW_TOPICS.length:AW_TOPICS.filter(t=>t.category===c.id).length;return `<button class="chip${S.ui.topicCategory===c.id?' active':''}" data-category="${c.id}">${c.label} · ${count}</button>`;}).join('')}</div>
+    <input class="topic-search" type="search" id="topicSearch" placeholder="ابحث عن موضوع" aria-label="ابحث عن موضوع" value="${escAttr(S.ui.topicSearch)}">
+    <div class="chips topic-chips" id="topicChips">${AW_TOPICS.map(t=>`<button class="chip${g.topicId===t.id?' active':''}" data-id="${t.id}" data-category="${t.category}"><span>${t.emoji}</span>${t.label}</button>`).join('')}</div>
+    <div class="topic-empty hint" id="topicEmpty" hidden>لا توجد مواضيع مطابقة. اكتب موضوعك في الحقل أعلاه.</div></div>
   <div class="field"><label>النبرة</label><div class="chips" id="toneChips">${Object.entries(AW_TONES).map(([k,v])=>`<button class="chip${g.tone===k?' active':''}" data-tone="${k}" title="${v.note}">${v.label}</button>`).join('')}</div></div>
   <div class="field"><label><i class="ti ti-wand"></i> الأسلوب البلاغي</label><div class="chips" id="devChips">
     <button class="chip${g.device==='auto'?' active':''}" data-dev="auto">تلقائي</button>${AW_DEVICES.map(dv=>`<button class="chip${g.device===dv.id?' active':''}" data-dev="${dv.id}" title="${dv.hint}">${dv.label}</button>`).join('')}<button class="chip${g.device==='classic'?' active':''}" data-dev="classic">كلاسيكي</button></div></div>
@@ -58,8 +61,11 @@ function secContent(){
 }
 function wireContent(){
   const g=S.gen;
+  const filterTopics=()=>{const category=S.ui.topicCategory,q=S.ui.topicSearch.trim().toLocaleLowerCase();let shown=0;$$('#topicChips .chip').forEach(c=>{const visible=(category==='all'||c.dataset.category===category)&&c.textContent.toLocaleLowerCase().includes(q);c.hidden=!visible;if(visible)shown++;});$('#topicEmpty').hidden=shown>0;};
   $('#topicInput').addEventListener('input',e=>{g.topicQuery=e.target.value;const m=matchTopic(e.target.value.trim());g.topicId=m?m.id:null;$$('#topicChips .chip').forEach(c=>c.classList.toggle('active',!!m&&c.dataset.id===m.id));});
   $('#topicInput').addEventListener('keydown',e=>{if(e.key==='Enter')generate(false);});
+  $('#topicSearch').addEventListener('input',e=>{S.ui.topicSearch=e.target.value;filterTopics();});
+  $$('#topicCategories .chip').forEach(c=>c.onclick=()=>{S.ui.topicCategory=c.dataset.category;$$('#topicCategories .chip').forEach(x=>x.classList.toggle('active',x===c));filterTopics();});
   $$('#topicChips .chip').forEach(c=>c.onclick=()=>{const tp=AW_TOPICS.find(x=>x.id===c.dataset.id);g.topicId=tp.id;g.topicQuery=tp.label;g.tone=tp.tone;
     if(S.doc.kit==='syria')commit(()=>{S.doc.palette=AW_TONES[tp.tone].dark?'dark':'light';});renderProps();});
   $$('#toneChips .chip').forEach(c=>c.onclick=()=>{g.tone=c.dataset.tone;if(S.doc.kit==='syria')commit(()=>{S.doc.palette=AW_TONES[g.tone].dark?'dark':'light';});renderProps();});
@@ -67,6 +73,7 @@ function wireContent(){
   $('#genBtn').onclick=()=>generate(false);$('#brainBtn').onclick=brainstorm;$('#shuffleBtn').onclick=()=>generate(true);
   $$('#props .idea').forEach(b=>b.onclick=()=>applyIdea(+b.dataset.i));
   const bc=$('#brainClose');if(bc)bc.onclick=()=>{brainIdeas=null;renderProps();};
+  filterTopics();
 }
 
 function secFormat(){
@@ -199,7 +206,9 @@ function shapeControls(l){
 function secBrand(){
   const d=S.doc,th=theme(d),eg=byRole(d,'eagle'),wm=byRole(d,'watermark'),av=byRole(d,'avatar'),sg=byRole(d,'signature');
   return `
-  <div class="field"><label>الهوية</label><div class="kits">${Object.entries(KITS).map(([k,v])=>`<button class="kit${d.kit===k?' active':''}" data-do="kit:${k}"><span class="kdots">${v.swatches.slice(0,4).map(c=>`<i style="background:${c}"></i>`).join('')}</span>${v.label}</button>`).join('')}</div></div>
+  <div class="field"><label>الهوية</label><div class="kits">${Object.entries(KITS).map(([k,v])=>`<button class="kit${d.kit===k?' active':''}" data-do="kit:${k}"><span class="kdots">${v.swatches.slice(0,4).map(c=>`<i style="background:${c}"></i>`).join('')}</span>${v.label}<small>${v.summary||''}</small></button>`).join('')}</div></div>
+  ${d.kit==='jableh'?'<div class="note">هوية جبلة: أزرق البحر ورملي دافئ وبرتقالي الحمضيات، مع أميري وتجوال وبليكس. لا يتضمن القالب شعاراً رسمياً للمدينة، ويمكنك إضافة أصل موثّق كطبقة صورة.</div>':''}
+  ${d.kit==='goldblack'?'<div class="note">هوية ذهبي وأسود: خلفية فحمية أو ورقية، ولمسات ذهبية وخط كوفي محلي.</div>':''}
   <div class="field"><label>الباليتة</label>${chips('doc','palette',[['dark','داكنة'],['light','فاتحة']],d.palette)}</div>
   ${d.kit!=='khaldoun'?`
   <div class="field"><label><i class="ti ti-building-bank"></i> الجهة الموقِّعة</label><select ${A('doc','entIdx','entIdx',1)}><option value="-1"${d.entIdx<0?' selected':''}>جهة مخصّصة</option><optgroup label="جهات رسمية">${AW_ENTITIES.map((e,i)=>`<option value="${i}"${i===d.entIdx?' selected':''}>${e.ar}</option>`).join('')}</optgroup></select></div>
@@ -237,7 +246,8 @@ function secExport(){
     <div class="caplim">${lim.map(([p,m])=>`<span class="${n>m?'over':''}">${p}: ${n}/${m}</span>`).join('')}</div>
     <div class="row">${btn('copyCaption','انسخ النصّ مع الوسم','ti-copy')}${btn('copyAll','انسخ كل نصوص التصميم','ti-clipboard-text')}</div>`,true)}
   ${group('proj','مشاريعي',`<div class="row"><input type="text" id="projName" placeholder="اسم المشروع"><button class="btn green sm" data-do="saveProject" style="flex:0 0 70px">احفظ</button></div>
-    <div class="plist">${Object.keys(S.projects).sort((a,b)=>S.projects[b].at-S.projects[a].at).map(k=>`<div class="pitem"><span class="pn" data-do="loadProject:${escAttr(k)}"><i class="ti ti-file"></i> ${esc(k)}</span><button data-do="delProject:${escAttr(k)}"><i class="ti ti-trash"></i></button></div>`).join('')||'<div class="hint">لا مشاريع بعد.</div>'}</div>`,false)}
+    <input class="project-search" type="search" id="projectSearch" placeholder="ابحث في المشاريع" aria-label="ابحث في المشاريع" ${Object.keys(S.projects).length?'':'hidden'}>
+    <div class="plist" id="projectList">${Object.keys(S.projects).sort((a,b)=>(S.projects[b].at||0)-(S.projects[a].at||0)).map(k=>`<div class="pitem" data-project-name="${escAttr(k.toLocaleLowerCase())}"><span class="pn" data-do="loadProject:${escAttr(k)}"><i class="ti ti-file"></i> ${esc(k)}</span><small class="project-meta">${S.projects[k].at?new Date(S.projects[k].at).toLocaleDateString('ar'):'محفوظ'}</small><button aria-label="حذف ${escAttr(k)}" data-do="delProject:${escAttr(k)}"><i class="ti ti-trash"></i></button></div>`).join('')||'<div class="hint">لا مشاريع بعد. أدخل اسماً واحفظ التصميم الحالي.</div>'}</div>`,false)}
   ${group('tpl','القوالب',`<div class="row"><input type="text" id="tplName" placeholder="اسم القالب"><button class="btn green sm" data-do="saveTemplate" style="flex:0 0 70px">احفظ</button></div>
     <div class="plist">${Object.keys(S.templates).map(k=>`<div class="pitem"><span class="pn" data-do="useTemplate:${escAttr(k)}"><i class="ti ti-template"></i> ${esc(k)}</span><button data-do="delTemplate:${escAttr(k)}"><i class="ti ti-trash"></i></button></div>`).join('')}</div>
     <div class="sub-h">قوالب البداية</div><div class="chips">${STARTERS.map(s=>`<button class="chip" data-do="starter:${s.id}">${s.label}</button>`).join('')}</div>
@@ -283,7 +293,7 @@ function onCtl(el,final){
 }
 function wireProps(){
   const P=$('#props');
-  P.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.k&&el.tagName!=='SELECT'&&el.type!=='checkbox'){onCtl(el,false);if(el.dataset.k==='caption')updCaption();}});
+  P.addEventListener('input',e=>{const el=e.target;if(el.id==='projectSearch'){const q=el.value.trim().toLocaleLowerCase();P.querySelectorAll('#projectList [data-project-name]').forEach(row=>row.hidden=!row.dataset.projectName.includes(q));return;}if(el.dataset&&el.dataset.k&&el.tagName!=='SELECT'&&el.type!=='checkbox'){onCtl(el,false);if(el.dataset.k==='caption')updCaption();}});
   P.addEventListener('change',e=>{const el=e.target;if(el.dataset&&el.dataset.k){onCtl(el,true);if(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='color')renderProps();}});
   P.addEventListener('click',e=>{
     const b=e.target.closest('button,[data-do],[data-sel],[data-rename]');if(!b||!P.contains(b))return;
@@ -332,7 +342,7 @@ function doAction(a){
     case 'eaglePos':{const l=layerById(arg),W=d.fmt.w,H=d.fmt.h,m=Math.round(Math.min(W,H)*0.06),ins=safeInsets(d);
       commit(()=>{if(arg2==='top'){l.x=Math.round((W-l.w)/2);l.y=ins.t+m;}else if(arg2==='tr'){l.x=W-m-l.w;l.y=ins.t+m;}else if(arg2==='tl'){l.x=m;l.y=ins.t+m;}else if(arg2==='center'){l.x=Math.round((W-l.w)/2);l.y=Math.round((H-l.h)/2);}else{l.x=Math.round((W-l.w)/2);l.y=H-ins.b-m-l.h;}l.manual=true;});break;}
     case 'editRole':{const l=byRole(d,arg);if(l){S.sel=[l.id];selectSection('edit');drawOverlay();}break;}
-    case 'kit':commit(()=>{applyKit(d,arg);if(arg==='khaldoun'&&d.palette!=='dark'&&d.palette!=='light')d.palette='dark';});renderProps();toast('الهوية: '+KITS[arg].label);break;
+    case 'kit':commit(()=>{applyKit(d,arg);if(KITS[arg].defaultPalette)d.palette=KITS[arg].defaultPalette;});renderProps();toast('الهوية: '+KITS[arg].label);break;
     case 'resetTheme':commit(()=>{d.themeOverride={};d.bg.c1=null;d.bg.c2=null;});renderProps();break;
     case 'addSlide':addSlide();break;case 'updateSlide':updateSlide(S.ui.slide);break;
     case 'slide':selectSlide(+arg);break;case 'delSlide':deleteSlide(+arg);break;case 'exportSeries':exportSeries();break;

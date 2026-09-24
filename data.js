@@ -220,8 +220,48 @@ window.AW_TOPICS = [
       { ar:"قطرةُ دمٍ تتحوّل في داخلها إلى قلبٍ ينبض لشخصٍ آخر", en:"a blood drop containing a beating heart for another person, warm conceptual minimal" },
       { ar:"كيسُ دمٍ معلّق يمدّ أنبوبه كحبلِ نجاةٍ إلى يدٍ ضعيفة", en:"a hanging blood bag whose tube extends like a lifeline to a weak reaching hand, hopeful clinical warmth" }
     ]
-  }
+  },
+  { id:"pedestrian-safety", label:"سلامة المشاة", emoji:"🚶", tone:"warn", kw:["مشاة","مشاة الطريق","عبور الشارع","ممر المشاة","رصيف"], tags:["#سلامة_المشاة","#الطريق_للجميع","#اعبر_بأمان"] },
+  { id:"school-transport", label:"السلامة حول المدارس", emoji:"🏫", tone:"warn", kw:["مدرسة","مدارس","طلاب","طالبات","حافلة مدرسية","عبور الطلاب"], tags:["#مدرسة_آمنة","#سلامة_الطلاب","#طريق_آمن_للمدرسة"] },
+  { id:"motorcycle-helmet", label:"سلامة الدراجات النارية", emoji:"🪖", tone:"warn", kw:["دراجة نارية","دراجات نارية","خوذة","موتور","سكوتر"], tags:["#خوذتك_تحميك","#سلامة_الدراجات","#قيادة_مسؤولة"] },
+  { id:"vehicle-check", label:"العناية بالمركبة", emoji:"🔧", tone:"warn", kw:["صيانة السيارة","صيانة المركبة","إطارات السيارة","فحص المركبة","فرامل السيارة"], tags:["#مركبة_آمنة","#افحص_مركبتك","#سلامة_الطريق"] },
+  { id:"first-aid", label:"التوعية بالإسعاف الأولي", emoji:"🩹", tone:"honor", kw:["إسعاف أولي","اسعاف اولي","إسعافات أولية","حقيبة إسعاف","مسعف"], tags:["#الإسعاف_الأولي","#استعد_للطوارئ","#سلامة_المجتمع"] },
+  { id:"medicine-safety", label:"الاستخدام الآمن للدواء", emoji:"💊", tone:"warn", kw:["دواء","أدوية","دواء آمن","تخزين الدواء","وصفة طبية"], tags:["#دواؤك_بمسؤولية","#اسأل_مختصاً","#صحتك_أمانة"] },
+  { id:"food-safety", label:"سلامة الغذاء", emoji:"🥗", tone:"honor", kw:["غذاء","طعام","أطعمة","تسمم غذائي","حفظ الطعام","نظافة الطعام"], tags:["#غذاء_آمن","#سلامة_الغذاء","#صحتك_تبدأ_من_غذائك"] },
+  { id:"mental-wellbeing", label:"الصحة النفسية وطلب الدعم", emoji:"💚", tone:"honor", kw:["الصحة النفسية","دعم نفسي","الضغط النفسي","طلب المساعدة","الرفاه النفسي"], tags:["#الصحة_النفسية","#طلب_الدعم_قوة","#لست_وحدك"] },
+  { id:"heat-safety", label:"الوقاية من الحر", emoji:"☀️", tone:"warn", kw:["حر شديد","موجة حر","ضربة شمس","حرارة مرتفعة","الطقس الحار"], tags:["#سلامة_الصيف","#احم_نفسك_من_الحر","#انتبه_للحرارة"] },
+  { id:"workplace-safety", label:"السلامة في مكان العمل", emoji:"🦺", tone:"warn", kw:["سلامة مهنية","مكان العمل","بيئة العمل","معدات الوقاية","إصابة العمل"], tags:["#بيئة_عمل_آمنة","#السلامة_المهنية","#سلامتك_أولاً"] },
+  { id:"emergency-readiness", label:"الاستعداد للطوارئ", emoji:"🧰", tone:"rebuild", kw:["استعداد للطوارئ","خطة طوارئ","حقيبة طوارئ","الكوارث","الاستجابة للطوارئ"], tags:["#استعد_للطوارئ","#وعي_واستعداد","#سلامة_الأسرة"] },
+  { id:"recycling", label:"فرز النفايات وإعادة التدوير", emoji:"♻️", tone:"rebuild", kw:["فرز النفايات","إعادة التدوير","تدوير","نفايات قابلة للتدوير","تدوير الورق"], tags:["#فرز_النفايات","#أعد_التدوير","#بيئة_أنظف"] },
+  { id:"tree-care", label:"حماية الأشجار والتشجير", emoji:"🌱", tone:"rebuild", kw:["أشجار","تشجير","قطع الأشجار","غرس شجرة","حماية الغابات"], tags:["#ازرع_أملاً","#احم_الأشجار","#مساحات_خضراء"] },
+  { id:"wildfire-prevention", label:"الوقاية من حرائق الغابات", emoji:"🌲", tone:"warn", kw:["حرائق الغابات","حريق غابة","الغابات","إشعال النار في الغابة","الغطاء النباتي"], tags:["#احم_غاباتنا","#لا_تشعلها","#طبيعتنا_أمانة"] },
+  { id:"animal-welfare", label:"الرفق بالحيوان", emoji:"🐾", tone:"honor", kw:["حيوان","حيوانات","الرفق بالحيوان","حماية الحيوانات","حيوانات الشارع"], tags:["#ارفق_بها","#الرفق_بالحيوان","#رحمة_لكل_كائن"] },
+  { id:"air-quality", label:"الحد من تلوث الهواء", emoji:"🌬️", tone:"rebuild", kw:["هواء ملوث","تلوث الهواء","جودة الهواء","دخان المصانع","انبعاثات"], tags:["#هواء_أنقى","#بيئة_صحية","#تنفس_بأمان"] },
+  { id:"digital-privacy", label:"الخصوصية والأمان الرقمي", emoji:"🔐", tone:"warn", kw:["خصوصية","أمان رقمي","أمن رقمي","كلمات المرور","بيانات شخصية","حماية الحساب"], tags:["#خصوصيتك_مهمة","#أمانك_الرقمي","#فكر_قبل_أن_تشارك"] },
+  { id:"misinformation", label:"التحقق من الأخبار والشائعات", emoji:"🔎", tone:"honor", kw:["شائعة","شائعات","أخبار كاذبة","خبر كاذب","تحقق من الخبر","معلومات مضللة"], tags:["#تحقق_قبل_النشر","#لا_تنشر_شائعة","#المعلومة_مسؤولية"] },
+  { id:"online-scams", label:"الوقاية من الاحتيال الإلكتروني", emoji:"🎣", tone:"warn", kw:["احتيال إلكتروني","نصب إلكتروني","روابط مشبوهة","رسائل احتيالية","تصيد إلكتروني"], tags:["#احذر_الاحتيال","#تحقق_من_الرابط","#أمانك_الرقمي"] },
+  { id:"cyberbullying", label:"التنمر الإلكتروني", emoji:"💬", tone:"honor", kw:["تنمر إلكتروني","تنمّر إلكتروني","إساءة عبر الإنترنت","مضايقة إلكترونية","تنمر على الإنترنت"], tags:["#لا_للتنمر_الإلكتروني","#كن_آمناً_رقمياً","#كلماتك_مسؤوليتك"] },
+  { id:"screen-balance", label:"التوازن في استخدام الشاشات", emoji:"📵", tone:"rebuild", kw:["وقت الشاشة","استخدام الهاتف","إدمان الهاتف","التوازن الرقمي","تقليل الشاشة"], tags:["#توازن_رقمي","#وقتك_أثمن","#حضورك_يهم"] },
+  { id:"accessibility", label:"إتاحة الأماكن للجميع", emoji:"♿", tone:"honor", kw:["إتاحة","سهولة الوصول","ذوو الإعاقة","الأشخاص ذوو الإعاقة","ممرات ذوي الإعاقة"], tags:["#مكان_للجميع","#الإتاحة_حق","#مجتمع_شامل"] },
+  { id:"inclusion", label:"احترام الاختلاف والتنوع", emoji:"🤝", tone:"honor", kw:["اختلاف","تنوع","قبول الآخر","احترام الآخرين","التعايش"], tags:["#نحترم_اختلافنا","#التنوع_يجمعنا","#معاً_بإنسانية"] },
+  { id:"volunteering", label:"التطوع وخدمة المجتمع", emoji:"🙌", tone:"rebuild", kw:["تطوع","متطوعون","مبادرة مجتمعية","خدمة المجتمع","عمل تطوعي"], tags:["#تطوع_وأثر","#مجتمع_متعاون","#يداً_بيد"] },
+  { id:"public-property", label:"حماية الممتلكات العامة", emoji:"🏙️", tone:"honor", kw:["ممتلكات عامة","مرافق عامة","تخريب","ممتلكات المدينة","المكان العام"], tags:["#ممتلكاتنا_مسؤوليتنا","#مدينتنا_بيتنا","#حافظ_على_المرفق"] },
+  { id:"child-protection", label:"سلامة الأطفال وحمايتهم", emoji:"🧸", tone:"honor", kw:["حماية الطفل","حماية الأطفال","سلامة الطفل","حقوق الطفل","أمان الأطفال"], tags:["#طفولة_آمنة","#نحمي_أطفالنا","#الطفل_أمانة"] },
+  { id:"education", label:"التعليم ومواصلة التعلّم", emoji:"📚", tone:"rebuild", kw:["تعليم","التسرب المدرسي","العودة إلى المدرسة","محو الأمية","التعلم"], tags:["#التعليم_يبني","#كل_طفل_يتعلم","#المعرفة_مستقبل"] },
+  { id:"community-solidarity", label:"التكافل ومساندة الجيران", emoji:"🏘️", tone:"honor", kw:["تكافل","مساندة الجيران","التضامن المجتمعي","مساعدة الجيران","تعاون الجيران"], tags:["#جيران_متعاونون","#التكافل_قوة","#سند_لبعضنا"] },
+  { id:"heritage-crafts", label:"حماية الحرف والتراث المحلي", emoji:"🧵", tone:"rebuild", kw:["حرف يدوية","حرف تقليدية","تراث محلي","صناعات تقليدية","الحرفيين"], tags:["#حرفتنا_هويتنا","#تراث_حي","#ادعم_الحرف_المحلية"] }
 ];
+
+window.AW_TOPIC_CATEGORIES = [
+  {id:"all",label:"الكل"},{id:"traffic",label:"المرور"},{id:"health",label:"الصحة والسلامة"},
+  {id:"environment",label:"البيئة"},{id:"digital",label:"الفضاء الرقمي"},
+  {id:"community",label:"المجتمع والحقوق"},{id:"learning",label:"التعلم والثقافة"}
+];
+const AW_TOPIC_CATEGORY_BY_ID = {
+  "phone-driving":"traffic","drowning":"health","drugs":"health","smoking":"health","sanitation":"environment","parks":"environment","seatbelt":"traffic","speeding":"traffic","water":"environment","electricity":"environment","fire":"health","litter":"environment","bullying":"community","heritage":"learning","blood":"health",
+  "pedestrian-safety":"traffic","school-transport":"traffic","motorcycle-helmet":"traffic","vehicle-check":"traffic","first-aid":"health","medicine-safety":"health","food-safety":"health","mental-wellbeing":"health","heat-safety":"health","workplace-safety":"health","emergency-readiness":"health","recycling":"environment","tree-care":"environment","wildfire-prevention":"environment","animal-welfare":"environment","air-quality":"environment","digital-privacy":"digital","misinformation":"digital","online-scams":"digital","cyberbullying":"digital","screen-balance":"digital","accessibility":"community","inclusion":"community","volunteering":"community","public-property":"community","child-protection":"community","community-solidarity":"community","education":"learning","heritage-crafts":"learning"
+};
+window.AW_TOPICS.forEach(t=>{t.category=AW_TOPIC_CATEGORY_BY_ID[t.id]||"community";});
 
 /* ===== مؤلّف عام لأي موضوع حرّ غير مفهرس ===== */
 window.AW_GENERIC = {
