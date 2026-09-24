@@ -102,6 +102,7 @@ function wireChrome(){
     if(tg==='layer')addImageLayer(f);
     else if(tg.startsWith('replace:')){const l=layerById(tg.slice(8));if(!l)return;try{const r=await storeImageFile(f);_imgDims[r.id]={w:r.w,h:r.h};commit(()=>{l.imgId=r.id;l.name=r.name;l.crop={x:0,y:0,w:1,h:1};});renderProps();}catch(err){toast('تعذّر فتح الصورة');}}
     else uploadPhoto(f);});
+  $('#backupInput').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';restoreBackup(f);});
   $('#fontInput').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const r=await uploadFont(f);toast('أُضيف الخط: '+r.label);
     const ls=selLayers().filter(l=>l.type==='text');if(ls.length)commit(()=>ls.forEach(l=>{l.font=r.family;l.weight=400;}));renderProps();}catch(err){toast('تعذّر قراءة الخط');}});
   /* إفلات صورة على اللوحة يجعلها صورة التصميم */

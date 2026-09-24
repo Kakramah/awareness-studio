@@ -39,6 +39,9 @@ function renderPropsSoft(){const a=document.activeElement;if(a&&$('#props').cont
 
 function secContent(){
   const g=S.gen,d=S.doc;const L=r=>byRole(d,r);
+  const lastTopic=g.last&&(AW_TOPICS.find(t=>t.id===g.last.topicId)||AW_TOPICS.find(t=>t.label===g.last.topicLabel));
+  const lastEditorial=g.last?(g.last.editorial!=null?g.last.editorial:!!(lastTopic&&AW_IDEAS[lastTopic.id])):false;
+  const lastSource=g.last&&(g.last.source||(lastEditorial&&window.AW_TOPIC_SOURCES&&lastTopic?AW_TOPIC_SOURCES[lastTopic.id]:null));
   return `
   <div class="field"><label><i class="ti ti-bulb"></i> موضوع التوعية</label><input type="text" id="topicInput" placeholder="اكتب موضوعاً أو اختر من الجاهز" value="${escAttr(g.topicQuery)}" autocomplete="off"></div>
   <div class="field"><label>مواضيع جاهزة (${AW_TOPICS.length})</label><div class="chips topic-categories" id="topicCategories">${AW_TOPIC_CATEGORIES.map(c=>{const count=c.id==='all'?AW_TOPICS.length:AW_TOPICS.filter(t=>t.category===c.id).length;return `<button class="chip${S.ui.topicCategory===c.id?' active':''}" data-category="${c.id}">${c.label} · ${count}</button>`;}).join('')}</div>
@@ -56,7 +59,7 @@ function secContent(){
   <div class="field"><label>الشعار الختامي</label><input type="text" ${A('L:'+L('slogan').id,'text')} value="${escAttr(L('slogan').text)}"></div>
   <div class="row"><div class="field" style="flex:1"><label>الوسم</label><input type="text" ${A('L:'+L('tag').id,'text','tag')} value="${escAttr(L('tag').text)}"></div>
   <div class="field" style="flex:1"><label>وسم موحّد للحملة</label><input type="text" ${A('gen','campTag')} value="${escAttr(g.campTag)}" placeholder="#حملة"></div></div>
-  ${g.last&&g.last.concept?`<div class="field"><label>فكرة الصورة (الاستعارة)</label><div class="note">${esc(g.last.concept.ar)}</div></div>`:''}
+  ${g.last?`<div class="field"><label>مصدر الفكرة</label><div class="idea-provenance"><b class="${lastEditorial?'curated':'generic'}">${lastEditorial?'فكرة محرّرة':'صياغة عامة'}</b><span>${lastEditorial?'اختيرت من بنك هذا الموضوع.':'ولّدها المحرّك العام لموضوعك.'}</span>${lastSource?`<a href="${escAttr(lastSource.url)}" target="_blank" rel="noopener noreferrer">${esc(lastSource.label)} <i class="ti ti-external-link"></i></a><small>مرجع للتحرير؛ راجع الإرشادات المحلية قبل النشر.</small>`:''}</div></div>${g.last.concept?`<div class="field"><label>فكرة الصورة (الاستعارة)</label><div class="note">${esc(g.last.concept.ar)}</div></div>`:''}`:''}
   <div class="hint"><i class="ti ti-hand-click"></i> انقر أي عنصرٍ على اللوحة لتحرّكه وتضبطه، وانقر الصورة مرتين لتقصّها.</div>`;
 }
 function wireContent(){
@@ -252,6 +255,8 @@ function secExport(){
     <div class="plist">${Object.keys(S.templates).map(k=>`<div class="pitem"><span class="pn" data-do="useTemplate:${escAttr(k)}"><i class="ti ti-template"></i> ${esc(k)}</span><button data-do="delTemplate:${escAttr(k)}"><i class="ti ti-trash"></i></button></div>`).join('')}</div>
     <div class="sub-h">قوالب البداية</div><div class="chips">${STARTERS.map(s=>`<button class="chip" data-do="starter:${s.id}">${s.label}</button>`).join('')}</div>
     <div class="hint">القالب يحفظ الطبقات والمواضع والأنماط بلا نصوص، ويُطبَّق على نصوصك وصورتك الحالية.</div>`,false)}
+  ${group('backup','نسخ احتياطي واستعادة',`<div class="row"><button class="btn sm" data-do="exportBackup"><i class="ti ti-download"></i> نزّل نسخة احتياطية</button><button class="btn sm" data-do="restoreBackup"><i class="ti ti-upload"></i> استعد نسخة</button></div><div class="hint">تتضمن المشاريع والقوالب والسلسلة والصور والخطوط. الاستعادة تستبدل البيانات المحفوظة في هذا المتصفح بعد التأكيد.</div>`,false)}
+  <div class="hint export-review"><b>قبل النشر:</b> راجع صحة المعلومات وحقوق الصور والشعارات، وتأكد من تفويض استخدام هوية الجهة.</div>
   ${group('prm','برومبت الصورة',`${chips('gen','promptMode',[['plate','خلفية فقط · موصى'],['full','بوستر كامل']],S.gen.promptMode)}
     <div class="prompt-box">${esc(buildPrompt(d))}</div>${btn('copyPrompt','انسخ البرومبت','ti-code')}`,false)}`;
 }
@@ -352,6 +357,8 @@ function doAction(a){
     case 'copyCaption':copyText(((d.caption||'')+(roleText(d,'tag')?'\n\n'+roleText(d,'tag'):'')).trim());break;
     case 'copyAll':copyText(d.layers.filter(l=>l.type==='text'&&l.visible!==false&&l.text&&l.role!=='signature').map(l=>l.text).join('\n'));break;
     case 'copyPrompt':copyText(buildPrompt(d));break;
+    case 'exportBackup':exportBackup();break;
+    case 'restoreBackup':$('#backupInput').click();break;
     case 'saveProject':saveProject(($('#projName').value||'').trim()||('مشروع '+new Date().toLocaleString('ar')));break;
     case 'loadProject':loadProject(a.slice(12));break;case 'delProject':deleteProject(a.slice(11));break;
     case 'saveTemplate':saveTemplate(($('#tplName').value||'').trim()||('قالب '+(Object.keys(S.templates).length+1)));break;

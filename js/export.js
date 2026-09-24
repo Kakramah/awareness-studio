@@ -68,6 +68,27 @@ async function exportSeries(){
 function saveProject(name){if(!name)return;const updating=!!S.projects[name];S.projects[name]={data:snapState(),at:Date.now()};DB.set('projects',S.projects).then(()=>toast(updating?'تحدّث المشروع ✓':'حُفظ المشروع ✓')).catch(saveFail);renderProps();}
 function loadProject(name){const p=S.projects[name];if(!p)return;loadSnap(p.data);toast('فُتح المشروع ✓');}
 function deleteProject(name){delete S.projects[name];DB.set('projects',S.projects).catch(saveFail);renderProps();}
+/* نسخة احتياطية كاملة تشمل الصور والخطوط المخزنة محلياً. الاستعادة تستبدل بيانات هذا المتصفح بعد تأكيد المستخدم. */
+function bytesToBase64(buf){const bytes=buf instanceof ArrayBuffer?new Uint8Array(buf):new Uint8Array(buf.buffer,buf.byteOffset,buf.byteLength);let s='';for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s);}
+function base64ToBuffer(s){const raw=atob(s),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out.buffer;}
+async function exportBackup(){
+  try{
+    await Promise.all([DB.set('autosave',snapState()),DB.set('projects',S.projects),DB.set('templates',S.templates),DB.set('series',S.series)]);
+    const entries=(await DB.all()).map(([k,v])=>[k,v instanceof ArrayBuffer||ArrayBuffer.isView(v)?{__awBinary:bytesToBase64(v)}:v]);
+    const pack={format:'awareness-studio-backup',version:1,createdAt:new Date().toISOString(),entries};
+    const blob=new Blob([JSON.stringify(pack)],{type:'application/json'});if(blob.size>250*1024*1024)throw new Error('النسخة تتجاوز 250MB');downloadBlob(blob,'awareness-studio-backup.json');toast('نُزّلت النسخة الاحتياطية ✓');
+  }catch(e){console.error(e);toast('تعذّر إنشاء النسخة الاحتياطية');}
+}
+async function restoreBackup(file){
+  if(!file)return;if(file.size>250*1024*1024){toast('حجم النسخة أكبر من الحد المسموح (250MB)');return;}
+  try{const pack=JSON.parse(await file.text());if(pack.format!=='awareness-studio-backup'||pack.version!==1||!Array.isArray(pack.entries))throw new Error('صيغة النسخة غير معروفة');
+    const allowed=k=>typeof k==='string'&&/^(autosave|projects|templates|series|fonts|welcomeSeen|img:[\w-]+|font:[\w-]+)$/.test(k);
+    if(pack.entries.length>5000||pack.entries.some(x=>!Array.isArray(x)||x.length!==2||!allowed(x[0])))throw new Error('محتوى النسخة غير صالح');
+    if(!confirm('ستستبدل الاستعادة المشاريع والقوالب والصور والخطوط المحفوظة حالياً في هذا المتصفح. تأكد من تنزيل نسخة حالية أولاً. هل تريد المتابعة؟'))return;
+    const entries=pack.entries.map(([k,v])=>[k,v&&typeof v==='object'&&typeof v.__awBinary==='string'?base64ToBuffer(v.__awBinary):v]);
+    await DB.replaceAll(entries);toast('اكتملت الاستعادة، سيُعاد تحميل الاستوديو');setTimeout(()=>location.reload(),700);
+  }catch(e){console.error(e);toast('تعذّرت الاستعادة: '+(e.message||'ملف غير صالح'));}
+}
 function saveTemplate(name){if(!name)return;S.templates[name]={doc:docToTemplate(S.doc),at:Date.now()};DB.set('templates',S.templates).then(()=>toast('حُفظ القالب ✓')).catch(saveFail);renderProps();}
 function useTemplate(name){const t=S.templates[name];if(!t)return;commit(()=>{S.doc=applyTemplate(t.doc,S.doc);});S.sel=[];renderProps();toast('طُبّق القالب ✓');}
 function deleteTemplate(name){delete S.templates[name];DB.set('templates',S.templates).catch(saveFail);renderProps();}
@@ -79,6 +100,10 @@ const STARTERS=[
   {id:'kh-full',label:'خلدون · صورة كاملة',kit:'khaldoun',palette:'dark',il:'full'},
   {id:'kh-framed',label:'خلدون · صورة في إطار',kit:'khaldoun',palette:'light',il:'framed'},
   {id:'kh-top',label:'خلدون · لوحة علوية',kit:'khaldoun',palette:'dark',il:'panel-top'},
+  {id:'goldblack-full',label:'ذهبي وأسود · صورة كاملة',kit:'goldblack',palette:'dark',il:'full'},
+  {id:'goldblack-editorial',label:'ذهبي وأسود · لوحة سفلية',kit:'goldblack',palette:'light',il:'panel-bottom'},
+  {id:'jableh-coast',label:'جبلة · صورة كاملة',kit:'jableh',palette:'dark',il:'full'},
+  {id:'jableh-editorial',label:'جبلة · لوحة سفلية',kit:'jableh',palette:'light',il:'panel-bottom'},
   {id:'free-side',label:'حرّ · جانبي (أفقي)',kit:'free',palette:'dark',il:'side',fmt:'landscape'},
   {id:'free-only',label:'حرّ · الصورة وحدها',kit:'free',palette:'dark',il:'only'}
 ];

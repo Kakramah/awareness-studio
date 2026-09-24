@@ -7,8 +7,11 @@ function currentTopic(){const g=S.gen,raw=(g.topicQuery||'').trim();return g.top
 function composeIdea(t,raw,dev,rng,noHistory){
   const g=S.gen;
   if(t&&AW_IDEAS[t.id]){
-    if(dev==='classic'){const s=Math.floor(rng()*4);return {dev:'classic',head:pick(t.heads,s),sub:pick(t.subs,s),slogan:pick(t.slogans,s),concept:pick(t.concepts,s)};}
     const bank=AW_IDEAS[t.id];
+    if(dev==='classic'){
+      if(Array.isArray(t.heads)&&Array.isArray(t.subs)&&Array.isArray(t.slogans)&&Array.isArray(t.concepts)){const s=Math.floor(rng()*4);return {dev:'classic',head:pick(t.heads,s),sub:pick(t.subs,s),slogan:pick(t.slogans,s),concept:pick(t.concepts,s)};}
+      return Object.assign({},bank[Math.floor(rng()*bank.length)],{dev:'classic'});
+    }
     let pool=bank.map((idea,i)=>({idea,i})).filter(x=>dev==='auto'||x.idea.dev===dev);
     if(!pool.length)pool=bank.map((idea,i)=>({idea,i}));
     if(!noHistory){const used=g.usedIdeas[t.id]||[];const fresh=pool.filter(x=>!used.includes(x.i));if(fresh.length)pool=fresh;else g.usedIdeas[t.id]=[];}
@@ -22,7 +25,8 @@ function composeIdea(t,raw,dev,rng,noHistory){
 }
 function ideaTag(t,raw,rng){let tag=t?pick(t.tags,Math.floor(rng()*t.tags.length)):pick(AW_GENERIC.tags(raw),0);if(S.gen.campTag&&S.gen.campTag.trim())tag=normTag(S.gen.campTag);return tag;}
 function applyIdeaToDoc(idea,tag,t,raw){
-  S.gen.last={head:idea.head,sub:idea.sub,slogan:idea.slogan,tag,concept:idea.concept,tone:S.gen.tone,topicLabel:t?t.label:raw,dev:idea.dev};
+  const editorial=!!(t&&AW_IDEAS[t.id]);
+  S.gen.last={head:idea.head,sub:idea.sub,slogan:idea.slogan,tag,concept:idea.concept,tone:S.gen.tone,topicId:t&&t.id,topicLabel:t?t.label:raw,dev:idea.dev,editorial,source:editorial&&window.AW_TOPIC_SOURCES?AW_TOPIC_SOURCES[t.id]||null:null};
   setRoleTexts(S.doc,{head:idea.head,sub:idea.sub,slogan:idea.slogan,tag});
 }
 function generate(reshuffle){

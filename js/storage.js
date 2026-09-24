@@ -7,7 +7,9 @@ const DB={_p:null,
   get(k){return this.tx('readonly',st=>st.get(k));},
   set(k,v){return this.tx('readwrite',st=>st.put(v,k));},
   del(k){return this.tx('readwrite',st=>st.delete(k));},
-  keys(){return this.tx('readonly',st=>st.getAllKeys());}
+  keys(){return this.tx('readonly',st=>st.getAllKeys());},
+  async all(){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction('kv','readonly'),st=t.objectStore('kv'),keys=st.getAllKeys(),vals=st.getAll();t.oncomplete=()=>res(keys.result.map((k,i)=>[k,vals.result[i]]));t.onerror=()=>rej(t.error);});},
+  async replaceAll(entries){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction('kv','readwrite'),st=t.objectStore('kv');st.clear();for(const [k,v] of entries)st.put(v,k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error);});}
 };
 let _saveWarned=false;
 function saveFail(e){console.warn(e);if(!_saveWarned){_saveWarned=true;toast('تعذّر الحفظ في المتصفح، فصدّر عملك');}}

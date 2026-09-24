@@ -5,7 +5,7 @@ let _rpTok=0,_rpPending=false;
 function dispScale(){const v=$('#view');return v&&v.clientWidth?v.clientWidth/S.doc.fmt.w:0.5;}
 function fitScale(){
   const sc=$('#stageScroll'),mobile=innerWidth<=900,W=S.doc.fmt.w,H=S.doc.fmt.h;
-  const aw=sc.clientWidth-(mobile?24:56),ah=mobile?innerHeight*0.66:sc.clientHeight-44;
+  const aw=sc.clientWidth-(mobile?24:56),ah=Math.max(140,sc.clientHeight-(mobile?20:44));
   return Math.max(.05,Math.min(aw/W,ah/H));
 }
 function requestRender(){if(_rpPending)return;_rpPending=true;requestAnimationFrame(()=>{_rpPending=false;renderPreview();});}
