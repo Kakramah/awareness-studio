@@ -6,7 +6,7 @@
 
 - **الرابط الحيّ:** https://kakramah.github.io/awareness-studio/
 - **المستودع:** https://github.com/Kakramah/awareness-studio (عام، الفرع `main`، ينشره GitHub Pages من الجذر)
-- **النسخة المحلية عند خلدون:** `~/khaldoun-library/Projects/awareness-studio/`
+- **النسخة المحلية عند خلدون:** `~/khaldoun-projects/awareness-studio/`
 
 ## ٢. ما يفعله
 
@@ -86,7 +86,7 @@
 ## ٦. التشغيل والفحص قبل أي تسليم
 
 ```bash
-cd ~/khaldoun-library/Projects/awareness-studio
+cd ~/khaldoun-projects/awareness-studio
 python3 -m http.server 8765
 ```
 
