@@ -133,7 +133,7 @@ function autoLayout(doc){
   const anyHead=(eg&&eg.visible)||(ea&&ea.visible&&ea.text)||(ee&&ee.visible&&ee.text);
   const lockBottom=anyHead?y+Math.round(22*k):top;
 
-  /* الأفاتار والتوقيع: canonical-values §1ب، والقياسات من wiki/_tools/هوية.py */
+  /* الأفاتار والتوقيع: canonical-values §1ب، والقياسات من tools/هوية.py في بيت خلدون */
   const av=L('avatar'),sg=L('signature');
   let footReserve=0;
   if(av&&av.visible){
